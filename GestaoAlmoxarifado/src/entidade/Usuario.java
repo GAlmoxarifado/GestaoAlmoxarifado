@@ -28,7 +28,6 @@ public class Usuario {
         this.funcionario = funcionario;
         this.idUsuario = idUsuario;
         this.email = email;
-        this.cpf = cpf;
         this.senha = senha;
         this.cpf = cpf;
     }

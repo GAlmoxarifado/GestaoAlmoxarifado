@@ -7,6 +7,9 @@ package apresentacao;
 
 import entidade.Funcionario;
 import entidade.Usuario;
+import java.util.Arrays;
+import java.util.List;
+import persistencia.UsuarioSistemaDAO;
 
 /**
  *
@@ -151,11 +154,12 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
         
         switch(index){
             case 0: 
+                UsuarioSistemaDAO usuSis = new UsuarioSistemaDAO();
                 
                 break;
             case 1: 
                 Funcionario funcionario = new Funcionario();
-                funcionario.setId(1);
+                funcionario.setId(Integer.parseInt(jTextField1.getText()));
                 funcionario.setMatricula(jTextFieldMatricula.getText());
                 Usuario usuAlmo = new Usuario(funcionario);
                 break;
