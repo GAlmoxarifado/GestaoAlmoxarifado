@@ -52,6 +52,7 @@ public class frmPrincipalAlmoxarifado extends javax.swing.JFrame {
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
+        jMenu4 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         mnuSair = new javax.swing.JMenuItem();
 
@@ -74,8 +75,11 @@ public class frmPrincipalAlmoxarifado extends javax.swing.JFrame {
         jMenu1.setText("Cadastro");
         jMenuBar1.add(jMenu1);
 
-        jMenu2.setText("Gerenciar");
+        jMenu2.setText("Movimentação");
         jMenuBar1.add(jMenu2);
+
+        jMenu4.setText("Relatórios");
+        jMenuBar1.add(jMenu4);
 
         jMenu3.setText("Sair");
 
@@ -150,6 +154,7 @@ public class frmPrincipalAlmoxarifado extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem mnuSair;
