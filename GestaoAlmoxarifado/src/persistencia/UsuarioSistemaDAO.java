@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -33,7 +34,7 @@ public class UsuarioSistemaDAO {
         prd.setString(1, usuario.getEmail());
         prd.setString(2, usuario.getSenha());
         prd.setInt(3, usuario.getFuncionario().getId());
-        prd.setInt(4, usuario.getCpf());
+        prd.setLong(4, usuario.getCpf());
 
         //Executa o sql contra o banco
         prd.execute();
@@ -66,7 +67,7 @@ public class UsuarioSistemaDAO {
         prd.setString(1, usuarioSis.getEmail());
         prd.setString(2, usuarioSis.getSenha());
         prd.setInt(3, usuarioSis.getFuncionario().getId());
-        prd.setInt(4, usuarioSis.getCpf());
+        prd.setLong(4, usuarioSis.getCpf());
         prd.setInt(5, usuarioSis.getIdUsuario());
 
         //Executa o sql contra o banco
@@ -128,7 +129,7 @@ public class UsuarioSistemaDAO {
 
         ResultSet rs = prd.executeQuery(sql);
 
-        ArrayList<Usuario> lista = new ArrayList<Usuario>();
+        ArrayList<Usuario> lista = new ArrayList<>();
 
         while (rs.next()) {
             Usuario usuarioSis = new Usuario();
@@ -136,7 +137,7 @@ public class UsuarioSistemaDAO {
             usuarioSis.setEmail(rs.getString("email"));
             usuarioSis.setSenha(rs.getString("senha"));
             usuarioSis.getFuncionario().setId(rs.getInt("funcionario"));
-            usuarioSis.setCpf(rs.getInt("cpf"));
+            usuarioSis.setCpf(rs.getLong("cpf"));
             lista.add(usuarioSis);
         }
 

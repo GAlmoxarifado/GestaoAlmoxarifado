@@ -125,9 +125,13 @@ public class frmPrincipalAlmoxarifado extends javax.swing.JFrame {
     }//GEN-LAST:event_mnuSairActionPerformed
 
     private void mnuCadastroUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuCadastroUsuarioActionPerformed
-        frmCadastroFuncionario frm = new frmCadastroFuncionario();
-        this.pnlPrincipal.add(frm);
-        frm.setVisible(true);
+        try {
+            frmCadastroFuncionario frm = new frmCadastroFuncionario(this.pnlPrincipal);
+            this.pnlPrincipal.add(frm);
+            frm.setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
     }//GEN-LAST:event_mnuCadastroUsuarioActionPerformed
 
     /**
