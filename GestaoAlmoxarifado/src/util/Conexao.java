@@ -29,7 +29,7 @@ public class Conexao {
             System.out.println("Não foi encontrada a biblioteca postgres!");
             return null;
         }catch(SQLException e){
-            System.out.println("Banco/Usuário/Senha estão errados. Verifique");
+            System.out.println("Banco/Usuário/Senha estão errados. Verifique sua conexão com o banco de dados");
             return null;
         }
     }
