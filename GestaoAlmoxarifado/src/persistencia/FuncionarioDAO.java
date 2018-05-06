@@ -22,8 +22,7 @@ public class FuncionarioDAO {
     public void incluir(Funcionario funcionario) throws SQLException {
 
         //Cria o sql a ser executado
-        String sql = "INSERT INTO funcionario (nome_func, matricula)"
-                + " VALUES (?,?)";
+        String sql = "INSERT INTO funcionario (nome_func, matricula) VALUES (?,?)";
 
         //Cria a conexão com o banco a partir da classe utilitária
         Connection cnn = util.Conexao.getConexao();
@@ -46,7 +45,7 @@ public class FuncionarioDAO {
 
     }
 
-    public void alterar(Funcionario usuarioSis) throws SQLException {
+    public void alterar(Funcionario funcionario) throws SQLException {
 
         //Cria o sql a ser executado
         String sql = "UPDATE funcionario SET"
@@ -60,9 +59,9 @@ public class FuncionarioDAO {
         PreparedStatement prd = cnn.prepareStatement(sql);
 
         //Seta os valores a serem injetados no código sql
-        prd.setString(1, usuarioSis.getNome());
-        prd.setString(2, usuarioSis.getMatricula());
-        prd.setInt(3, usuarioSis.getId());
+        prd.setString(1, funcionario.getNome());
+        prd.setString(2, funcionario.getMatricula());
+        prd.setInt(3, funcionario.getId());
 
         //Executa o sql contra o banco
         prd.execute();
@@ -124,11 +123,11 @@ public class FuncionarioDAO {
         ArrayList<Funcionario> lista = new ArrayList<Funcionario>();
 
         while (rs.next()) {
-            Funcionario usuarioSis = new Funcionario();
-            usuarioSis.setId(rs.getInt("id_func"));
-            usuarioSis.setNome(rs.getString("nome_func"));
-            usuarioSis.setMatricula(rs.getString("matricula"));
-            lista.add(usuarioSis);
+            Funcionario funcionario = new Funcionario();
+            funcionario.setId(rs.getInt("id_func"));
+            funcionario.setNome(rs.getString("nome_func"));
+            funcionario.setMatricula(rs.getString("matricula"));
+            lista.add(funcionario);
         }
 
         return lista;
