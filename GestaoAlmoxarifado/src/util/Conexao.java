@@ -7,28 +7,30 @@ import java.sql.SQLException;
 public class Conexao {
     
     private static Connection conexao;
-
-    private Conexao() {}
     
     public static Connection getConexao(){
-        try {
-            if(conexao == null || conexao.isClosed()) conexao = conectar();
-        } catch (Exception e) {
-            System.out.println("Erro: " + e.getMessage());
+        try{
+            if(conexao == null || conexao.isClosed()){
+                conexao = conectar();
+            }
+        }catch(Exception e){
+            System.out.printf("Erro: %s\n", e.getMessage());
         }
         return conexao;
     }
-    
+
     private static Connection conectar() throws ClassNotFoundException, SQLException{
-        try {
+        try{
+            
             Class.forName("org.postgresql.Driver");
-            return DriverManager.getConnection("jdbc:postgresql://localhost:5432/almoxarifado", "almoxarifado", "123456");
-        } catch (ClassNotFoundException e) {
-            System.out.println("Não foi encontrada a biblioteca postgres");
+        
+            return DriverManager.getConnection("jdbc:postgresql://localhost:5432/almoxarifado","postgres","123456");
+        }catch(ClassNotFoundException e){
+            System.out.println("Não foi encontrada a biblioteca postgres!");
             return null;
-        } catch (SQLException e){
-            System.out.println("Banco/ Usuário/ Senha Estão Incorretos.");
+        }catch(SQLException e){
+            System.out.println("Banco/Usuário/Senha estão errados. Verifique");
             return null;
-        } catch (Exception e){return null;}
+        }
     }
 }

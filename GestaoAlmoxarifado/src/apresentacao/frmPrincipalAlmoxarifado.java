@@ -51,6 +51,7 @@ public class frmPrincipalAlmoxarifado extends javax.swing.JFrame {
         pnlPrincipal = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        mnuCadastroUsuario = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMenu4 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
@@ -73,6 +74,15 @@ public class frmPrincipalAlmoxarifado extends javax.swing.JFrame {
         );
 
         jMenu1.setText("Cadastro");
+
+        mnuCadastroUsuario.setText("Cadastro de Usuário");
+        mnuCadastroUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuCadastroUsuarioActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnuCadastroUsuario);
+
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Movimentação");
@@ -113,6 +123,12 @@ public class frmPrincipalAlmoxarifado extends javax.swing.JFrame {
     private void mnuSairActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuSairActionPerformed
         this.sair();
     }//GEN-LAST:event_mnuSairActionPerformed
+
+    private void mnuCadastroUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuCadastroUsuarioActionPerformed
+        frmCadastroFuncionario frm = new frmCadastroFuncionario();
+        this.pnlPrincipal.add(frm);
+        frm.setVisible(true);
+    }//GEN-LAST:event_mnuCadastroUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -157,6 +173,7 @@ public class frmPrincipalAlmoxarifado extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem mnuCadastroUsuario;
     private javax.swing.JMenuItem mnuSair;
     private javax.swing.JDesktopPane pnlPrincipal;
     // End of variables declaration//GEN-END:variables
