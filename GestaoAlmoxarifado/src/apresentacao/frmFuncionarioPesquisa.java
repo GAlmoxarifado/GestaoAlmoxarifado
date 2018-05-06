@@ -184,7 +184,7 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
             tblResultado.setModel(new DefaultTableModel(detalhe, cabecalho));
             
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e.getMessage());
+            e.printStackTrace();
         }
     }
     

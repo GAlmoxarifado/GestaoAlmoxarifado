@@ -113,7 +113,8 @@ public class FuncionarioDAO {
     public ArrayList<Funcionario> listar() throws SQLException {
 
         String sql = "SELECT id_func, nome_func, matricula"
-                + " FROM funcionario ORDER BY id_func;";
+                + " FROM funcionario WHERE id_func NOT IN (SELECT funcionario FROM usuario_sis)"
+                + " ORDER BY id_func;";
 
         Connection cnn = util.Conexao.getConexao();
         Statement prd = cnn.createStatement();
