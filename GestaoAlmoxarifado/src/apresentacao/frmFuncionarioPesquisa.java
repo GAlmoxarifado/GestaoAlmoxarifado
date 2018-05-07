@@ -1,3 +1,4 @@
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -194,6 +195,8 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
             
             Vector<String> cabecalho = new Vector<>();
             cabecalho.add("Código do Usuário");
+            cabecalho.add("Nome");
+            cabecalho.add("Matrícula");
             cabecalho.add("E-mail");
             cabecalho.add("Senha");
             cabecalho.add("Código do Funcionário");
@@ -203,17 +206,14 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
             for (Usuario usuarioSis : new UsuarioSistemaDAO().listar()) {
                 Vector<String> linha = new Vector<>();
                 linha.add(usuarioSis.getIdUsuario() + "");
+                linha.add(usuarioSis.getFuncionario().getNome());
+                linha.add(usuarioSis.getFuncionario().getMatricula());
                 linha.add(usuarioSis.getEmail());
                 linha.add(usuarioSis.getSenha());
                 linha.add(usuarioSis.getFuncionario().getId() + "");
                 linha.add(usuarioSis.getCpf() + "");
                 detalhe.add(linha);
             }
-//            for (Funcionario funcionario : new FuncionarioDAO().listar()) {
-//                Vector<String> linha = new Vector<>();
-//                
-//                detalhe.add(linha);
-//            }
             
             tblResultado.setModel(new DefaultTableModel(detalhe, cabecalho));
         } catch (Exception e) {

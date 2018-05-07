@@ -5,6 +5,7 @@
  */
 package persistencia;
 
+import entidade.Funcionario;
 import entidade.Usuario;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -132,11 +133,12 @@ public class UsuarioSistemaDAO {
         ArrayList<Usuario> lista = new ArrayList<>();
 
         while (rs.next()) {
+            Funcionario usuarioAux = new FuncionarioDAO().consultar(rs.getInt("funcionario"));
             Usuario usuarioSis = new Usuario();
             usuarioSis.setIdUsuario(rs.getInt("id_usu_sis"));
             usuarioSis.setEmail(rs.getString("email"));
             usuarioSis.setSenha(rs.getString("senha"));
-            usuarioSis.getFuncionario().setId(rs.getInt("funcionario"));
+            usuarioSis.setFuncionario(usuarioAux);
             usuarioSis.setCpf(rs.getLong("cpf"));
             lista.add(usuarioSis);
         }

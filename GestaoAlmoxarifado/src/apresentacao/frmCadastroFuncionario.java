@@ -272,8 +272,6 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
                     new FuncionarioBR().salvar(funcionario1);
                     new UsuarioSisBR().salvar(usuarioSis);
                     
-                    
-                    
                     break;
                 case 1: 
                     Funcionario funcionario2 = new Funcionario();
