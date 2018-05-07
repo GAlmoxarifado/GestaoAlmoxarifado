@@ -15,6 +15,8 @@ import java.util.Vector;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import negocio.FuncionarioBR;
+import negocio.UsuarioSisBR;
 import persistencia.FuncionarioDAO;
 import persistencia.UsuarioSistemaDAO;
 
@@ -52,6 +54,8 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
         tblResultado = new javax.swing.JTable();
         cmbCategoria = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        btnAtivar = new javax.swing.JToggleButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -87,6 +91,11 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
 
             }
         ));
+        tblResultado.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                tblResultadoMousePressed(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblResultado);
 
         cmbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Almoxarifado", "Sistema" }));
@@ -97,6 +106,16 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
         });
 
         jLabel1.setText("Mostrar usuário do:");
+
+        jLabel2.setText("Ativar mouse:");
+
+        btnAtivar.setText("Mouse Desativado");
+        btnAtivar.setEnabled(false);
+        btnAtivar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAtivarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -109,9 +128,13 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
                 .addGap(24, 24, 24))
             .addGroup(layout.createSequentialGroup()
                 .addGap(36, 36, 36)
-                .addComponent(jLabel1)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel1)
+                    .addComponent(jLabel2))
                 .addGap(28, 28, 28)
-                .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAtivar))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -121,7 +144,11 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAtivar)
+                    .addComponent(jLabel2))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(btnFechar)
@@ -143,19 +170,75 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
     private void cmbCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCategoriaActionPerformed
         try {
             switch(cmbCategoria.getSelectedIndex()){
-                case 0: preencherTelaAlmox(); break;
-                case 1: preencherTelaSist(); break;
+                case 0: 
+                    btnAtivar.setEnabled(true);
+                    preencherTelaAlmox(); 
+                    break;
+                case 1: 
+                    btnAtivar.setEnabled(true);
+                    preencherTelaSist(); 
+                    break;
             }
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
     }//GEN-LAST:event_cmbCategoriaActionPerformed
 
+    private void tblResultadoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblResultadoMousePressed
+        try {
+            if(btnAtivar.isSelected()){
+                int linha = tblResultado.getSelectedRow();
+                String codigo = tblResultado.getValueAt(linha,0).toString();
+                
+                switch(cmbCategoria.getSelectedIndex()){
+                    case 0:
+                        Funcionario func = new FuncionarioBR().consultar(
+                                Integer.parseInt(codigo));
+                        
+                        frmCadastroFuncionario janela = new frmCadastroFuncionario(principal, func);
+                        
+                        principal.add(janela);
+                        janela.setVisible(true);
+                        this.dispose();
+                        break;
+                    case 1: 
+                        Usuario usuario = new UsuarioSisBR().consultar(
+                                Integer.parseInt(codigo));
+                        
+                        frmCadastroFuncionario janela2 = new frmCadastroFuncionario(principal, usuario);
+                        
+                        principal.add(janela2);
+                        janela2.setVisible(true);
+                        this.dispose();
+                        break;
+                }
+            } else{
+                
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }//GEN-LAST:event_tblResultadoMousePressed
+
+    private void btnAtivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtivarActionPerformed
+        if(btnAtivar.isSelected()){
+            btnAtivar.setText("Mouse ativado");
+            tblResultado.setEnabled(true);
+        } else{
+            tblResultado.setRowSelectionAllowed(false);
+            tblResultado.setEnabled(false);
+            btnAtivar.setText("Mouse desativado");
+        }
+        System.out.println(btnAtivar.isSelected());
+    }//GEN-LAST:event_btnAtivarActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JToggleButton btnAtivar;
     private javax.swing.JButton btnFechar;
     private javax.swing.JComboBox<String> cmbCategoria;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;

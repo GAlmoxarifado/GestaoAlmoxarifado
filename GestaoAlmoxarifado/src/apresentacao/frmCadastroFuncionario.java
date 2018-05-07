@@ -7,6 +7,7 @@ package apresentacao;
 
 import entidade.Funcionario;
 import entidade.Usuario;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.JDesktopPane;
@@ -14,6 +15,7 @@ import javax.swing.JOptionPane;
 import negocio.FuncionarioBR;
 import negocio.UsuarioSisBR;
 import persistencia.UsuarioSistemaDAO;
+import util.Validation;
 
 /**
  *
@@ -35,6 +37,7 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
         txtCpf.setText("");
         txtEmail.setText("");
         txtSenha.setText("");
+        cmbCategoria.setSelectedIndex(0);
     }
     
     /**
@@ -48,6 +51,23 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
         this();
         this.principal = principal;
     }
+    
+    public frmCadastroFuncionario(JDesktopPane principal, Funcionario func){
+        this();
+        this.principal = principal;
+        cmbCategoria.setSelectedIndex(1);
+        cmbCategoria.setEnabled(false);
+        condicao(false);
+        preencherTelaAlmox(func);
+    }
+    
+    public frmCadastroFuncionario(JDesktopPane principal, Usuario usuario){
+        this();
+        this.principal = principal;
+        cmbCategoria.setSelectedIndex(0);
+        cmbCategoria.setEnabled(false);
+        preencherTelaSis(usuario);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -59,6 +79,7 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
     private void initComponents() {
 
         jComboBox1 = new javax.swing.JComboBox<>();
+        jPasswordField1 = new javax.swing.JPasswordField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -70,16 +91,18 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
         txtMatricula = new javax.swing.JTextField();
         txtCpf = new javax.swing.JTextField();
         txtEmail = new javax.swing.JTextField();
-        txtSenha = new javax.swing.JTextField();
-        jComboBoxCategoria = new javax.swing.JComboBox<>();
+        cmbCategoria = new javax.swing.JComboBox<>();
         jLabel7 = new javax.swing.JLabel();
         btnCadastrar = new javax.swing.JButton();
         btnLimpar = new javax.swing.JButton();
         btnFechar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
         btnPesquisar = new javax.swing.JButton();
+        txtSenha = new javax.swing.JPasswordField();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jPasswordField1.setText("jPasswordField1");
 
         setTitle("Cadastro de Funcionário");
 
@@ -97,16 +120,39 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
 
         txtCodigoFunc.setEditable(false);
 
+        txtNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtNomeKeyPressed(evt);
+            }
+        });
+
         txtMatricula.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtMatriculaActionPerformed(evt);
             }
         });
+        txtMatricula.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMatriculaKeyTyped(evt);
+            }
+        });
 
-        jComboBoxCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Usuário Sistema", "Usuário Almoxarifado" }));
-        jComboBoxCategoria.addActionListener(new java.awt.event.ActionListener() {
+        txtCpf.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCpfKeyTyped(evt);
+            }
+        });
+
+        txtEmail.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtEmailKeyTyped(evt);
+            }
+        });
+
+        cmbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Usuário Sistema", "Usuário Almoxarifado" }));
+        cmbCategoria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jComboBoxCategoriaActionPerformed(evt);
+                cmbCategoriaActionPerformed(evt);
             }
         });
 
@@ -134,11 +180,23 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
         });
 
         btnExcluir.setText("Excluir");
+        btnExcluir.setEnabled(false);
+        btnExcluir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExcluirActionPerformed(evt);
+            }
+        });
 
         btnPesquisar.setText("Pesquisar");
         btnPesquisar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnPesquisarActionPerformed(evt);
+            }
+        });
+
+        txtSenha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtSenhaKeyTyped(evt);
             }
         });
 
@@ -166,18 +224,11 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
                         .addGap(25, 25, 25)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtCpf, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 239, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(txtCodigoFunc, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
                         .addComponent(jLabel7)
                         .addGap(26, 26, 26)
-                        .addComponent(jComboBoxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(33, 33, 33))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(18, 18, 18)
@@ -191,27 +242,30 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
                         .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnPesquisar)
-                        .addGap(63, 63, 63))))
+                        .addGap(52, 52, 52))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                            .addComponent(txtCpf, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                            .addComponent(txtNome, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                            .addComponent(txtSenha))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(57, Short.MAX_VALUE)
+                .addContainerGap(58, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jComboBoxCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
                     .addComponent(jLabel1)
                     .addComponent(txtCodigoFunc, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(33, 33, 33)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel3)
-                            .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(46, 46, 46)
-                        .addComponent(btnPesquisar)))
-                .addGap(19, 19, 19)
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel3)
+                    .addComponent(txtMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnPesquisar))
+                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
@@ -223,11 +277,11 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5))
-                .addGap(38, 38, 38)
+                .addGap(39, 39, 39)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addGap(34, 34, 34)
+                    .addComponent(jLabel6)
+                    .addComponent(txtSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnLimpar)
                     .addComponent(btnFechar)
@@ -239,10 +293,10 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jComboBoxCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCategoriaActionPerformed
-        if(jComboBoxCategoria.getSelectedIndex() == 1) condicao(false);
+    private void cmbCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCategoriaActionPerformed
+        if(cmbCategoria.getSelectedIndex() == 1) condicao(false);
         else condicao(true);
-    }//GEN-LAST:event_jComboBoxCategoriaActionPerformed
+    }//GEN-LAST:event_cmbCategoriaActionPerformed
 
     private void txtMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtMatriculaActionPerformed
         // TODO add your handling code here:
@@ -250,9 +304,27 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         try {
-            //Integer.parseInt(txtCpf.getText())
-            switch(jComboBoxCategoria.getSelectedIndex()){
+            ArrayList<String> textos = new ArrayList<>();
+            
+            switch(cmbCategoria.getSelectedIndex()){
                 case 0: 
+                    String senha = "";
+                    for (int i = 0; i < txtSenha.getPassword().length; i++) {
+                        senha += txtSenha.getPassword()[i];
+                    }
+                    textos.removeAll(textos);
+                    textos.add(txtMatricula.getText());
+                    textos.add(txtNome.getText());
+                    textos.add(txtCpf.getText());
+                    textos.add(txtEmail.getText());
+                    textos.add(senha);
+                    
+                    Validation.isEmpty(textos);
+                    Validation.invalidCaracAndLetters(txtMatricula.getText());
+                    Validation.invalidCaracAndLetters(txtCpf.getText());
+                    Validation.invalidCaracAndNumbers(txtNome.getText());
+                    Validation.invalidCaracters(txtEmail.getText());
+                    
                     Funcionario funcionario1 = new Funcionario();
                     Usuario usuarioSis = new Usuario();
 
@@ -262,7 +334,7 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
                     usuarioSis.setFuncionario(funcionario1);
                     usuarioSis.setCpf(Long.parseLong(txtCpf.getText()));
                     usuarioSis.setEmail(txtEmail.getText());
-                    usuarioSis.setSenha(txtSenha.getText());
+                    usuarioSis.setSenha(senha);
 
                     if(txtCodigoFunc.getText() != null && !txtCodigoFunc.getText().isEmpty()){
                         funcionario1.setId(Integer.parseInt(txtCodigoFunc.getText()));
@@ -274,6 +346,14 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
                     
                     break;
                 case 1: 
+                    textos.removeAll(textos);
+                    textos.add(txtMatricula.getText());
+                    textos.add(txtNome.getText());
+                    
+                    Validation.isEmpty(textos);
+                    Validation.invalidCaracAndLetters(txtMatricula.getText());
+                    Validation.invalidCaracAndNumbers(txtNome.getText());
+                    
                     Funcionario funcionario2 = new Funcionario();
                     
                     funcionario2.setNome(txtNome.getText());
@@ -313,6 +393,71 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
         }
     }//GEN-LAST:event_btnPesquisarActionPerformed
 
+    private void txtMatriculaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMatriculaKeyTyped
+        try {
+            Validation.limitCaracter(6, txtMatricula.getText(), evt);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }//GEN-LAST:event_txtMatriculaKeyTyped
+
+    private void txtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyPressed
+        try {
+            Validation.limitCaracter(255, txtNome.getText(), evt);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }//GEN-LAST:event_txtNomeKeyPressed
+
+    private void txtCpfKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCpfKeyTyped
+        try {
+            Validation.limitCaracter(11, txtCpf.getText(), evt);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }//GEN-LAST:event_txtCpfKeyTyped
+
+    private void txtEmailKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEmailKeyTyped
+        try {
+            Validation.limitCaracter(30, txtEmail.getText(), evt);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }//GEN-LAST:event_txtEmailKeyTyped
+
+    private void txtSenhaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtSenhaKeyTyped
+        try {
+            String senha = "";
+            for (int i = 0; i < txtSenha.getPassword().length; i++) {
+                senha += txtSenha.getPassword()[i];
+            }
+            Validation.limitCaracter(20, senha, evt);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }//GEN-LAST:event_txtSenhaKeyTyped
+
+    private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
+        try {
+            int resposta = JOptionPane.showConfirmDialog(null, 
+                    "Confirma a exclusão do \"Funcionário\" ?",
+                    "Gestão Almoxarifado", JOptionPane.YES_NO_OPTION);
+            
+            if(resposta == JOptionPane.YES_OPTION){
+                if(cmbCategoria.getSelectedIndex() == 0)
+                    new UsuarioSisBR().deletar(Integer.parseInt(txtCodigoFunc.getText()));
+                else
+                    new FuncionarioBR().deletar(Integer.parseInt(txtCodigoFunc.getText()));
+                
+                JOptionPane.showMessageDialog(rootPane, 
+                        "Operação efetuada com sucesso!");
+                limpar();
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }//GEN-LAST:event_btnExcluirActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCadastrar;
@@ -320,8 +465,8 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
     private javax.swing.JButton btnFechar;
     private javax.swing.JButton btnLimpar;
     private javax.swing.JButton btnPesquisar;
+    private javax.swing.JComboBox<String> cmbCategoria;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBoxCategoria;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -329,13 +474,41 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JTextField txtCodigoFunc;
     private javax.swing.JTextField txtCpf;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtMatricula;
     private javax.swing.JTextField txtNome;
-    private javax.swing.JTextField txtSenha;
+    private javax.swing.JPasswordField txtSenha;
     // End of variables declaration//GEN-END:variables
+
+    private void preencherTelaAlmox(Funcionario func) {
+        try {
+            txtCodigoFunc.setText(func.getId()+"");
+            txtMatricula.setText(func.getMatricula());
+            txtNome.setText(func.getNome());
+            
+            btnExcluir.setEnabled(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }
+
+    private void preencherTelaSis(Usuario usuario) {
+        try {
+            txtCodigoFunc.setText(usuario.getIdUsuario()+"");
+            txtMatricula.setText(usuario.getFuncionario().getMatricula());
+            txtNome.setText(usuario.getFuncionario().getNome());
+            txtCpf.setText(usuario.getCpf()+"");
+            txtEmail.setText(usuario.getEmail());
+            txtSenha.setText(usuario.getSenha());
+            
+            btnExcluir.setEnabled(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }
 
     
 }
