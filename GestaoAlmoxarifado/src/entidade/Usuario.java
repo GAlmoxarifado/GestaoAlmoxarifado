@@ -17,7 +17,9 @@ public class Usuario {
     private long cpf;
     private Funcionario funcionario;
     
-    public Usuario(){}
+    public Usuario(){
+    this.funcionario = new Funcionario();
+    }
     
     public Usuario(Funcionario funcionario){
         this.funcionario = funcionario;

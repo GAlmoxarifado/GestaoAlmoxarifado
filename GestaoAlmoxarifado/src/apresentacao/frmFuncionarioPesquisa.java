@@ -202,8 +202,9 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
                         this.dispose();
                         break;
                     case 1: 
-                        Usuario usuario = new UsuarioSisBR().consultar(
-                                Integer.parseInt(codigo));
+                        Usuario usuario = new UsuarioSisBR().consultar(Integer.parseInt(codigo));
+                        
+                        System.out.println(usuario.getEmail());
                         
                         frmCadastroFuncionario janela2 = new frmCadastroFuncionario(principal, usuario);
                         
@@ -216,7 +217,8 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
                 
             }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+//            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+                e.printStackTrace();
         }
     }//GEN-LAST:event_tblResultadoMousePressed
 

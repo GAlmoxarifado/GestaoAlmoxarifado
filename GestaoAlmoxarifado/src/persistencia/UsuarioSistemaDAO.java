@@ -112,8 +112,8 @@ public class UsuarioSistemaDAO {
             usuarioSis.setIdUsuario(rs.getInt("id_usu_sis"));
             usuarioSis.setEmail(rs.getString("email"));
             usuarioSis.setSenha(rs.getString("senha"));
-            usuarioSis.getFuncionario().setId(rs.getInt("funcionario"));
-            usuarioSis.setCpf(rs.getInt("cpf"));
+            usuarioSis.setFuncionario(new FuncionarioDAO().consultar(rs.getInt("funcionario")));
+            usuarioSis.setCpf(rs.getLong("cpf"));
         }
 
         return usuarioSis;
