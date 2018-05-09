@@ -22,7 +22,7 @@ public class FuncionarioDAO {
     public void incluir(Funcionario funcionario) throws SQLException {
 
         //Cria o sql a ser executado
-        String sql = "INSERT INTO funcionario (nome_func, matricula) VALUES (?,?)";
+        String sql = "INSERT INTO funcionario (nome_func, matricula) VALUES (?,?);";
 
         //Cria a conexão com o banco a partir da classe utilitária
         Connection cnn = util.Conexao.getConexao();
@@ -49,8 +49,8 @@ public class FuncionarioDAO {
 
         //Cria o sql a ser executado
         String sql = "UPDATE funcionario SET"
-                + " nome_func = ? , "
-                + " matricula = ? , "
+                + " nome_func = ?,"
+                + " matricula = ?"
                 + " WHERE id_func = ?;";
 
         //Cria a conexão com o banco a partir da classe utilitária

@@ -53,9 +53,9 @@ public class UsuarioSistemaDAO {
 
         //Cria o sql a ser executado
         String sql = "UPDATE usuario_sis SET"
-                + " email = ? , "
-                + " senha = ? , "
-                + " funcionario = ? , "
+                + " email = ?,"
+                + " senha = ?,"
+                + " funcionario = ?,"
                 + " cpf = ?"
                 + " WHERE id_usu_sis = ?;";
 

@@ -38,6 +38,7 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
         txtEmail.setText("");
         txtSenha.setText("");
         cmbCategoria.setSelectedIndex(0);
+        cmbCategoria.setEnabled(true);
     }
     
     /**
@@ -244,17 +245,18 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
                         .addComponent(btnPesquisar)
                         .addGap(52, 52, 52))
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtEmail, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
-                            .addComponent(txtCpf, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
-                            .addComponent(txtNome, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
-                            .addComponent(txtSenha))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txtCpf, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE)
+                                .addComponent(txtSenha))
+                            .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 195, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(58, Short.MAX_VALUE)
+                .addContainerGap(31, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel7)
@@ -287,7 +289,7 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
                     .addComponent(btnFechar)
                     .addComponent(btnCadastrar)
                     .addComponent(btnExcluir))
-                .addGap(36, 36, 36))
+                .addGap(50, 50, 50))
         );
 
         pack();
@@ -388,6 +390,7 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
             frmFuncionarioPesquisa janela = new frmFuncionarioPesquisa(principal);
             principal.add(janela);
             janela.setVisible(true);
+            this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }

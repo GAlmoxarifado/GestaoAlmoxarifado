@@ -14,9 +14,8 @@ import java.util.regex.Pattern;
 
 
 /**
- * Utilitário para validação de campos de texto.
+ * Utilitário para validação de string.
  * 
- * <p> 
  * @author Rodrigo Leite
  */
 public class Validation {
@@ -70,7 +69,7 @@ public class Validation {
     }
     
     public static void invalidCaracAndNumbers(String texto) throws Exception{
-        Pattern pattern = Pattern.compile("[\u0020-\u0040|\\u005B-\\u005D|"
+        Pattern pattern = Pattern.compile("[\u0021-\u0040|\\u005B-\\u005D|"
                 + "\u005F-\u0060|\u007B-\u007D|\u00A1-\u00BF]");
         Matcher matcher = pattern.matcher(texto);
         
@@ -80,7 +79,7 @@ public class Validation {
     }
     
     public static void invalidCaracAndNumbers(ArrayList<String> string) throws Exception{
-        Pattern pattern = Pattern.compile("[\u0020-\u0040|\\u005B-\\u005D|"
+        Pattern pattern = Pattern.compile("[\u0021-\u0040|\\u005B-\\u005D|"
                 + "\u005F-\u0060|\u007B-\u007D|\u00A1-\u00BF]");
         
         for (String texto : string) {
