@@ -18,7 +18,7 @@ public class Usuario {
     private Funcionario funcionario;
     
     public Usuario(){
-    this.funcionario = new Funcionario();
+        this.funcionario = new Funcionario();
     }
     
     public Usuario(Funcionario funcionario){
