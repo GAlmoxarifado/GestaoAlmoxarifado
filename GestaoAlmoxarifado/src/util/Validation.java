@@ -34,10 +34,23 @@ public class Validation {
      * @param evt Ação da tecla do teclado
      * @throws Exception Alerta de limite
      */
-    public static void limitCaracter(int quantidadeMax, String texto, KeyEvent evt) throws Exception{
+    public static void limitMaxCaracter(int quantidadeMax, String texto, KeyEvent evt) throws Exception{
         if(texto.trim().length() >= quantidadeMax){
             evt.consume();
             throw new Exception("Quantidade máxima de caracteres: " + quantidadeMax);
+        }
+    }
+    
+    public static void limitMinCaracter(int quantidadeMin, String texto) throws Exception{
+        if(texto.trim().length() < quantidadeMin){
+            throw new Exception("Quantidade mínima de caracteres: " + quantidadeMin);
+        }
+    }
+    
+    public static void limitMaxMinCaracter(int quantidadeMax, int quantidadeMin, String texto) throws Exception{
+        if(texto.trim().length() < quantidadeMin || texto.trim().length() >= quantidadeMax){
+            throw new Exception("Quantidade mínima de caracteres: " + quantidadeMin +
+                    "\nQuantidade máxima de caracteres: " + quantidadeMax);
         }
     }
     

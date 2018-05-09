@@ -316,7 +316,7 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
                     }
                     textos.removeAll(textos);
                     textos.add(txtMatricula.getText());
-                    textos.add(txtNome.getText());
+                    textos.add(txtNome.getText().trim());
                     textos.add(txtCpf.getText());
                     textos.add(txtEmail.getText());
                     textos.add(senha);
@@ -324,8 +324,9 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
                     Validation.isEmpty(textos);
                     Validation.invalidCaracAndLetters(txtMatricula.getText());
                     Validation.invalidCaracAndLetters(txtCpf.getText());
+                    Validation.limitMinCaracter(11, txtCpf.getText());
                     Validation.invalidCaracAndNumbers(txtNome.getText());
-                    Validation.invalidCaracters(txtEmail.getText());
+                    Validation.invalidSpaces(txtEmail.getText());
                     
                     Funcionario funcionario1 = new Funcionario();
                     Usuario usuarioSis = new Usuario();
@@ -398,7 +399,7 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
 
     private void txtMatriculaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMatriculaKeyTyped
         try {
-            Validation.limitCaracter(6, txtMatricula.getText(), evt);
+            Validation.limitMaxCaracter(6, txtMatricula.getText(), evt);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
@@ -406,7 +407,7 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
 
     private void txtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyPressed
         try {
-            Validation.limitCaracter(255, txtNome.getText(), evt);
+            Validation.limitMaxCaracter(255, txtNome.getText(), evt);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
@@ -414,7 +415,7 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
 
     private void txtCpfKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCpfKeyTyped
         try {
-            Validation.limitCaracter(11, txtCpf.getText(), evt);
+            Validation.limitMaxCaracter(11, txtCpf.getText(), evt);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
@@ -422,7 +423,7 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
 
     private void txtEmailKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtEmailKeyTyped
         try {
-            Validation.limitCaracter(30, txtEmail.getText(), evt);
+            Validation.limitMaxCaracter(30, txtEmail.getText(), evt);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
@@ -434,7 +435,7 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
             for (int i = 0; i < txtSenha.getPassword().length; i++) {
                 senha += txtSenha.getPassword()[i];
             }
-            Validation.limitCaracter(20, senha, evt);
+            Validation.limitMaxCaracter(20, senha, evt);
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
