@@ -10,13 +10,15 @@ public class EntradaProduto {
     private Integer id;
     private Date data_Validade;
     private Date data_Entrada;
-    private Integer quantidade;
+    private Double quantidade;
     private int acao;
-    private Integer produto;
-    private Integer usuario_Sis;
-    private Integer funcionario;
+    private Produto produto;
+    private Usuario usuario_Sis;
+    private Funcionario funcionario;
 
-    public EntradaProduto(Integer id, Date data_Validade, Date dataEntrada, Integer quantidade, int acao, Integer produto, Integer usuario_Sis, Integer funcionario) {
+    public EntradaProduto(Integer id, Date data_Validade, Date dataEntrada, 
+            Double quantidade, int acao, Produto produto, 
+            Usuario usuario_Sis, Funcionario funcionario) {
         this.id = id;
         this.data_Validade = data_Validade;
         this.data_Entrada = dataEntrada;
@@ -40,11 +42,11 @@ public class EntradaProduto {
         this.id = id;
     }
 
-    public Integer getQuantidade() {
+    public Double getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(Integer quantidade) {
+    public void setQuantidade(Double quantidade) {
         this.quantidade = quantidade;
     }
 
@@ -72,27 +74,28 @@ public class EntradaProduto {
         this.acao = acao;
     }
 
-    public Integer getProduto() {
+    public Produto getProduto() {
         return produto;
     }
 
-    public void setProduto(Integer produto) {
+    public void setProduto(Produto produto) {
         this.produto = produto;
     }
 
-    public Integer getUsuario_Sis() {
+    public Usuario getUsuario_Sis() {
         return usuario_Sis;
     }
 
-    public void setUsuario_Sis(Integer usuario_Sis) {
+    public void setUsuario_Sis(Usuario usuario_Sis) {
         this.usuario_Sis = usuario_Sis;
     }
 
-    public Integer getFuncionario() {
+    public Funcionario getFuncionario() {
         return funcionario;
     }
 
-    public void setFuncionario(Integer funcionario) {
+    public void setFuncionario(Funcionario funcionario) {
         this.funcionario = funcionario;
     }
+    
 }

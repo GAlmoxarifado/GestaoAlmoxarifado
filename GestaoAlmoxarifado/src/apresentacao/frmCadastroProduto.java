@@ -14,6 +14,7 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
+import negocio.CategoriaBR;
 import negocio.FuncionarioBR;
 import negocio.ProdutoBR;
 import negocio.UsuarioSisBR;
@@ -41,6 +42,12 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
     public frmCadastroProduto() {
         initComponents();
         
+    }
+    
+    public frmCadastroProduto(JDesktopPane principal, Produto produto){
+        this();
+        this.principal = principal;
+        preencherTela(produto);
     }
     
     public frmCadastroProduto(JDesktopPane principal){
@@ -259,7 +266,7 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
             
             Produto produto = new Produto();
             
-            produto.setCategoria(cmbCategoria.getSelectedIndex()+1);
+            produto.setCategoria(new CategoriaBR().consultar(cmbCategoria.getSelectedIndex()+1));
             produto.setNome(txtNome.getText());
             produto.setCodigoBusca(Integer.parseInt(txtCodBusca.getText()));
             produto.setDescricao(txtAreaDesc.getText());
@@ -290,7 +297,7 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         try {
-            frmFuncionarioPesquisa janela = new frmFuncionarioPesquisa(principal);
+            frmProdutoCadastradoPesquisa janela = new frmProdutoCadastradoPesquisa(principal);
             principal.add(janela);
             janela.setVisible(true);
             this.dispose();
@@ -336,7 +343,7 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
 
     private void txtValorUnitKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtValorUnitKeyPressed
         try {
-            Validation.limitMaxCaracter(255, txtValorUnit.getText(), evt);
+            Validation.limitMaxCaracter(8, txtValorUnit.getText(), evt);
             Validation.invalidSpaces(txtValorUnit.getText());
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
@@ -366,5 +373,17 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
     private javax.swing.JTextField txtNome;
     private javax.swing.JTextField txtValorUnit;
     // End of variables declaration//GEN-END:variables
+
+    private void preencherTela(Produto produto) {
+        try {
+            txtCodigoProd.setText(produto.getId_prod()+"");
+            txtCodBusca.setText(produto.getCodigoBusca()+"");
+            txtNome.setText(produto.getNome());
+            txtAreaDesc.setText(produto.getDescricao());
+            txtValorUnit.setText(produto.getValorUnitario()+"");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }
     
 }

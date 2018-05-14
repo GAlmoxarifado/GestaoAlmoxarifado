@@ -17,15 +17,15 @@ public class SaidaProdutoDAO {
     public void inserir(SaidaProduto entidade) throws SQLException{
         Connection con = util.Conexao.getConexao();
         
-        String sql = "INSERT INTO SAIDA (id_Saida , data_Saida, quantidade,"
-                + " produto, usuario_Sis) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO saida (id_Saida , data_saida, quantidade,"
+                + " produto, funcionario) VALUES (?,?,?,?,?)";
         
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1, entidade.getId());
         ps.setDate(2, entidade.getData_Saida());
-        ps.setInt(3, entidade.getQuantidade());
-        ps.setInt(4, entidade.getProduto());
-        ps.setInt(5, entidade.getUsuario_sis());
+        ps.setDouble(3, entidade.getQuantidade());
+        ps.setInt(4, entidade.getEntradaProduto().getId());
+        ps.setInt(5, entidade.getFuncionario().getId());
        
         ps.execute();
         
@@ -40,22 +40,23 @@ public class SaidaProdutoDAO {
     public void deletar(int id) throws SQLException{
         Connection con = util.Conexao.getConexao();
         
-        String sql = "DELETE FROM SAIDA WHERE id_Saida=?;";
+        String sql = "DELETE FROM saida WHERE id_Saida=?;";
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1, id);
         ps.execute();
     }
+    
     public void alterar(SaidaProduto entidade) throws SQLException{
         Connection con = util.Conexao.getConexao();
         
-        String sql = "UPDATE SAIDA SET  data_Saida=?, quantidade=?,  produto=?, usuario_Sis=? "
-                + " WHERE id_Saida=?;";
+        String sql = "UPDATE saida SET  data_saida = ?, quantidade = ?,  produto = ?, funcionario = ? "
+                + " WHERE id_saida = ?;";
         
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setDate(1, entidade.getData_Saida());
-        ps.setInt(2, entidade.getQuantidade());
-        ps.setInt(3, entidade.getProduto());
-        ps.setInt(4, entidade.getUsuario_sis());
+        ps.setDouble(2, entidade.getQuantidade());
+        ps.setInt(3, entidade.getEntradaProduto().getId());
+        ps.setInt(4, entidade.getFuncionario().getId());
        
         ps.setInt(5, entidade.getId());
         ps.executeUpdate();
@@ -64,13 +65,15 @@ public class SaidaProdutoDAO {
     public SaidaProduto visualizarUm(int id) throws SQLException{
         Connection con = util.Conexao.getConexao();
         
-        String sql = "SELECT * FROM SAIDA WHERE id_Saida=?;";
+        String sql = "SELECT * FROM saida WHERE id_saida = ?;";
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
         
         while (rs.next()) {
-            return new SaidaProduto(rs.getInt(1) ,rs.getDate(2), rs.getInt(3), rs.getInt(4), rs.getInt(5));
+            return new SaidaProduto(rs.getInt(1), rs.getDate(2), rs.getDouble(3), 
+                    new EntradaProdutoDAO().visualizarUm(rs.getInt(4)),
+                    new FuncionarioDAO().consultar(rs.getInt(5)));
         }
         return null;
     }
@@ -78,13 +81,15 @@ public class SaidaProdutoDAO {
     public List<SaidaProduto> visualizarAll() throws SQLException{
         Connection con = util.Conexao.getConexao();
         
-        String sql = "SELECT * FROM SAIDA ORDER BY id_Saida;";
+        String sql = "SELECT * FROM saida ORDER BY id_saida;";
         PreparedStatement ps = con.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         
         List<SaidaProduto> lista = new ArrayList<>();
         while (rs.next()) {
-            lista.add(new SaidaProduto(rs.getInt(1) ,rs.getDate(2), rs.getInt(3), rs.getInt(4), rs.getInt(5)));
+            lista.add(new SaidaProduto(rs.getInt(1), rs.getDate(2), rs.getDouble(3), 
+                    new EntradaProdutoDAO().visualizarUm(rs.getInt(4)),
+                    new FuncionarioDAO().consultar(rs.getInt(5))));
         }
         return lista;
     }

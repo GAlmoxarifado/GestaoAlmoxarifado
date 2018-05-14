@@ -1,6 +1,6 @@
 package negocio;
 
-import entidade.Categoria;
+import entidade.CategoriaProduto;
 import java.sql.SQLException;
 import java.util.List;
 import persistencia.CategoriaDao;
@@ -11,7 +11,7 @@ import persistencia.CategoriaDao;
  */
 public class CategoriaBR {
     
-    public void salvar(Categoria obj) throws SQLException{
+    public void salvar(CategoriaProduto obj) throws SQLException{
         if(obj.getId() != 0) new CategoriaDao().alterar(obj);
         else new CategoriaDao().inserir(obj);
         
@@ -20,11 +20,11 @@ public class CategoriaBR {
         new CategoriaDao().deletar(codigo);
     }
     
-    public Categoria consultar(int codigo) throws SQLException{
+    public CategoriaProduto consultar(int codigo) throws SQLException{
         return new CategoriaDao().visualizarUm(codigo);
     }
     
-    public List<Categoria> listar() throws SQLException{
+    public List<CategoriaProduto> listar() throws SQLException{
         return new CategoriaDao().visualizarAll();
     }
 }

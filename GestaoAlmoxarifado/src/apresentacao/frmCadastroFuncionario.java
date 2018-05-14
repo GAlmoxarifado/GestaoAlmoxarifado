@@ -310,16 +310,12 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
             
             switch(cmbCategoria.getSelectedIndex()){
                 case 0: 
-                    String senha = "";
-                    for (int i = 0; i < txtSenha.getPassword().length; i++) {
-                        senha += txtSenha.getPassword()[i];
-                    }
                     textos.removeAll(textos);
                     textos.add(txtMatricula.getText());
                     textos.add(txtNome.getText().trim());
                     textos.add(txtCpf.getText());
                     textos.add(txtEmail.getText());
-                    textos.add(senha);
+                    textos.add(String.valueOf(txtSenha.getPassword()));
                     
                     Validation.isEmpty(textos);
                     Validation.invalidCaracAndLetters(txtMatricula.getText());
@@ -337,7 +333,7 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
                     usuarioSis.setFuncionario(funcionario1);
                     usuarioSis.setCpf(Long.parseLong(txtCpf.getText()));
                     usuarioSis.setEmail(txtEmail.getText());
-                    usuarioSis.setSenha(senha);
+                    usuarioSis.setSenha(String.valueOf(txtSenha.getPassword()));
 
                     if(txtCodigoFunc.getText() != null && !txtCodigoFunc.getText().isEmpty()){
                         funcionario1.setId(Integer.parseInt(txtCodigoFunc.getText()));

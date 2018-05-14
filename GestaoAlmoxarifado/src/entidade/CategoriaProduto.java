@@ -4,16 +4,16 @@ package entidade;
  *
  * @author Savio
  */
-public class Categoria {
+public class CategoriaProduto {
     private int id;
     private String nome;
 
-    public Categoria(int id, String descricao) {
+    public CategoriaProduto(int id, String descricao) {
         this.id = id;
         this.nome = descricao;
     }
 
-    public Categoria() {
+    public CategoriaProduto() {
     }
     
     public int getId() {

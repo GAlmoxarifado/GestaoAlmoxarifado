@@ -8,6 +8,7 @@ package apresentacao;
 
 
 
+import entidade.Usuario;
 import javax.swing.JOptionPane;
 
 /**
@@ -18,9 +19,16 @@ public class frmPrincipalAlmoxarifado extends javax.swing.JFrame {
     /**
      * Creates new form frmPrincipalCampeonato
      */
+    Usuario usuarioSis;
+    
     public frmPrincipalAlmoxarifado() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
+    }
+    
+    public frmPrincipalAlmoxarifado(Usuario usuarioSis){
+        this();
+        this.usuarioSis = usuarioSis;
     }
     
     private void sair(){
@@ -50,10 +58,11 @@ public class frmPrincipalAlmoxarifado extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         pnlPrincipal = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
-        mnuCadastroProduto = new javax.swing.JMenu();
+        jMenu1 = new javax.swing.JMenu();
         mnuCadastroUsuario = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        mnuCadastroProduto = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
+        mnuMovimentacao = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenu3 = new javax.swing.JMenu();
         mnuSair = new javax.swing.JMenuItem();
@@ -74,12 +83,7 @@ public class frmPrincipalAlmoxarifado extends javax.swing.JFrame {
             .addGap(0, 515, Short.MAX_VALUE)
         );
 
-        mnuCadastroProduto.setText("Cadastro");
-        mnuCadastroProduto.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnuCadastroProdutoActionPerformed(evt);
-            }
-        });
+        jMenu1.setText("Cadastro");
 
         mnuCadastroUsuario.setText("Cadastro de Usuário");
         mnuCadastroUsuario.addActionListener(new java.awt.event.ActionListener() {
@@ -87,14 +91,28 @@ public class frmPrincipalAlmoxarifado extends javax.swing.JFrame {
                 mnuCadastroUsuarioActionPerformed(evt);
             }
         });
-        mnuCadastroProduto.add(mnuCadastroUsuario);
+        jMenu1.add(mnuCadastroUsuario);
 
-        jMenuItem2.setText("Cadastro de Produto");
-        mnuCadastroProduto.add(jMenuItem2);
+        mnuCadastroProduto.setText("Cadastro de Produto");
+        mnuCadastroProduto.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuCadastroProdutoActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mnuCadastroProduto);
 
-        jMenuBar1.add(mnuCadastroProduto);
+        jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Movimentação");
+
+        mnuMovimentacao.setText("Movimentação");
+        mnuMovimentacao.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuMovimentacaoActionPerformed(evt);
+            }
+        });
+        jMenu2.add(mnuMovimentacao);
+
         jMenuBar1.add(jMenu2);
 
         jMenu4.setText("Relatórios");
@@ -153,6 +171,16 @@ public class frmPrincipalAlmoxarifado extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_mnuCadastroProdutoActionPerformed
 
+    private void mnuMovimentacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuMovimentacaoActionPerformed
+        try {
+            frmMovimentacao frm = new frmMovimentacao(this.pnlPrincipal);
+            this.pnlPrincipal.add(frm);
+            frm.setVisible(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }//GEN-LAST:event_mnuMovimentacaoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -190,14 +218,15 @@ public class frmPrincipalAlmoxarifado extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenu mnuCadastroProduto;
+    private javax.swing.JMenuItem mnuCadastroProduto;
     private javax.swing.JMenuItem mnuCadastroUsuario;
+    private javax.swing.JMenuItem mnuMovimentacao;
     private javax.swing.JMenuItem mnuSair;
     private javax.swing.JDesktopPane pnlPrincipal;
     // End of variables declaration//GEN-END:variables

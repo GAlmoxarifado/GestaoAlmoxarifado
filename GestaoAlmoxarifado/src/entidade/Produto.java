@@ -10,9 +10,10 @@ public class Produto {
     private Integer id_prod;
     private Integer codigoBusca;
     private Double valorUnitario;
-    private Integer categoria;
+    private CategoriaProduto categoria;
 
-    public Produto(String nome, String descricao, Integer id_prod, Integer codigoBusca, Double valorUnitario, Integer categoria) {
+    public Produto(String nome, String descricao, Integer id_prod, 
+            Integer codigoBusca, Double valorUnitario, CategoriaProduto categoria) {
         this.nome = nome;
         this.descricao = descricao;
         this.id_prod = id_prod;
@@ -22,6 +23,7 @@ public class Produto {
     }
 
     public Produto() {
+        this.categoria = new CategoriaProduto();
     }
     
     public String getNome() {
@@ -48,11 +50,11 @@ public class Produto {
         this.valorUnitario = valorUnitario;
     }
 
-    public Integer getCategoria() {
+    public CategoriaProduto getCategoria() {
         return categoria;
     }
 
-    public void setCategoria(Integer categoria) {
+    public void setCategoria(CategoriaProduto categoria) {
         this.categoria = categoria;
     }
 

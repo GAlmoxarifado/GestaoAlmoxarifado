@@ -1,6 +1,6 @@
 package persistencia;
 
-import entidade.Categoria;
+import entidade.CategoriaProduto;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +14,7 @@ import java.util.List;
  * @author Savio
  */
 public class CategoriaDao {
-     public void inserir(Categoria entidade) throws SQLException{
+     public void inserir(CategoriaProduto entidade) throws SQLException{
         Connection con = util.Conexao.getConexao();
         
         String sql = "INSERT INTO Categoria_Prod (id_cat_prod, nome) VALUES (?,?)";
@@ -40,7 +40,7 @@ public class CategoriaDao {
         ps.setInt(1, id);
         ps.execute();
     }
-    public void alterar(Categoria entidade) throws SQLException{
+    public void alterar(CategoriaProduto entidade) throws SQLException{
         Connection con = util.Conexao.getConexao();
         
         String sql = "UPDATE Categoria_Prod SET nome=? WHERE id_cat_prod=?;";
@@ -51,7 +51,7 @@ public class CategoriaDao {
         ps.executeUpdate();
     }
     
-    public Categoria visualizarUm(int id) throws SQLException{
+    public CategoriaProduto visualizarUm(int id) throws SQLException{
         Connection con = util.Conexao.getConexao();
         
         String sql = "SELECT * FROM Categoria_Prod WHERE id_cat_prod=?;";
@@ -60,21 +60,21 @@ public class CategoriaDao {
         ResultSet rs = ps.executeQuery();
         
         while (rs.next()) {
-            return new Categoria(rs.getInt(1) ,rs.getString(2));
+            return new CategoriaProduto(rs.getInt(1) ,rs.getString(2));
         }
         return null;
     }
     
-    public List<Categoria> visualizarAll() throws SQLException{
+    public List<CategoriaProduto> visualizarAll() throws SQLException{
         Connection con = util.Conexao.getConexao();
         
         String sql = "SELECT * FROM Categoria_Prod ORDER BY id_cat_prod;";
         PreparedStatement ps = con.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         
-        List<Categoria> lista = new ArrayList<>();
+        List<CategoriaProduto> lista = new ArrayList<>();
         while (rs.next()) {
-            lista.add(new Categoria(rs.getInt(1) ,rs.getString(2)));
+            lista.add(new CategoriaProduto(rs.getInt(1) ,rs.getString(2)));
         }
         return lista;
     }

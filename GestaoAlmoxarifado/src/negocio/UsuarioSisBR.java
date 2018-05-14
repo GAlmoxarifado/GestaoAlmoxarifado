@@ -31,6 +31,10 @@ public class UsuarioSisBR {
         return new UsuarioSistemaDAO().consultar(codigo);
     }
     
+    public Usuario consultar(long cpf, String senha) throws SQLException{
+        return new UsuarioSistemaDAO().consultar(cpf, senha);
+    }
+    
     public List<Usuario> listar() throws SQLException{
         return new UsuarioSistemaDAO().listar();
     }

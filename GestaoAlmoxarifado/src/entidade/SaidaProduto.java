@@ -10,19 +10,20 @@ public class SaidaProduto {
 
     private Integer id;
     private Date data_Saida;
-    private Integer quantidade;
-    private Integer produto;
-    private Integer usuario_sis;
+    private Double quantidade;
+    private EntradaProduto produto;
+    private Funcionario funcionario;
     
     public SaidaProduto() {
     }
 
-    public SaidaProduto(Integer id, Date data_Saida, Integer quantidade, Integer produto, Integer usuario_sis) {
+    public SaidaProduto(Integer id, Date data_Saida, Double quantidade, 
+            EntradaProduto produto, Funcionario funcionario) {
         this.id = id;
         this.data_Saida = data_Saida;
         this.quantidade = quantidade;
         this.produto = produto;
-        this.usuario_sis = usuario_sis;
+        this.funcionario = funcionario;
     }
 
     public Integer getId() {
@@ -41,27 +42,27 @@ public class SaidaProduto {
         this.data_Saida = data_Saida;
     }
 
-    public Integer getQuantidade() {
+    public Double getQuantidade() {
         return quantidade;
     }
 
-    public void setQuantidade(Integer quantidade) {
+    public void setQuantidade(Double quantidade) {
         this.quantidade = quantidade;
     }
 
-    public Integer getProduto() {
+    public EntradaProduto getEntradaProduto() {
         return produto;
     }
 
-    public void setProduto(Integer produto) {
+    public void setEntradaProduto(EntradaProduto produto) {
         this.produto = produto;
     }
 
-    public Integer getUsuario_sis() {
-        return usuario_sis;
+    public Funcionario getFuncionario() {
+        return funcionario;
     }
 
-    public void setUsuario_sis(Integer usuario_sis) {
-        this.usuario_sis = usuario_sis;
+    public void setFuncionario(Funcionario funcionario) {
+        this.funcionario = funcionario;
     }
 }

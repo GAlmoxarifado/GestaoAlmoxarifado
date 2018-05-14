@@ -160,6 +160,9 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
         try {
+            frmCadastroFuncionario janela = new frmCadastroFuncionario(principal);            
+            principal.add(janela);
+            janela.setVisible(true);
             this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());

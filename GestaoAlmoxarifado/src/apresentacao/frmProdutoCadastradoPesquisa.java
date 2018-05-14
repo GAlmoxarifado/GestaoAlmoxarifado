@@ -8,19 +8,13 @@ package apresentacao;
 
 
 
-import entidade.Funcionario;
+
 import entidade.Produto;
-import entidade.Usuario;
-import java.util.ArrayList;
 import java.util.Vector;
 import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
-import negocio.FuncionarioBR;
 import negocio.ProdutoBR;
-import negocio.UsuarioSisBR;
-import persistencia.FuncionarioDAO;
-import persistencia.UsuarioSistemaDAO;
 
 /**
  *
@@ -34,12 +28,15 @@ public class frmProdutoCadastradoPesquisa extends javax.swing.JInternalFrame {
      */
     public frmProdutoCadastradoPesquisa() {
         initComponents();
+        preencherTelaPerec();
     }
     
     public frmProdutoCadastradoPesquisa(JDesktopPane principal){
         this();
         this.principal = principal;
     }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -54,10 +51,6 @@ public class frmProdutoCadastradoPesquisa extends javax.swing.JInternalFrame {
         btnFechar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblResultado = new javax.swing.JTable();
-        cmbCategoria = new javax.swing.JComboBox<>();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        btnAtivar = new javax.swing.JToggleButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -72,7 +65,7 @@ public class frmProdutoCadastradoPesquisa extends javax.swing.JInternalFrame {
         ));
         jScrollPane1.setViewportView(jTable1);
 
-        setTitle("Pesquisa Funcionário");
+        setTitle("Pesquisa Produtos Cadastrados");
 
         btnFechar.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         btnFechar.setText("Fechar");
@@ -100,25 +93,6 @@ public class frmProdutoCadastradoPesquisa extends javax.swing.JInternalFrame {
         });
         jScrollPane2.setViewportView(tblResultado);
 
-        cmbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Perecível", "Não-Perecível" }));
-        cmbCategoria.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                cmbCategoriaActionPerformed(evt);
-            }
-        });
-
-        jLabel1.setText("Mostrar usuário do:");
-
-        jLabel2.setText("Ativar mouse:");
-
-        btnAtivar.setText("Mouse Desativado");
-        btnAtivar.setEnabled(false);
-        btnAtivar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAtivarActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -128,29 +102,11 @@ public class frmProdutoCadastradoPesquisa extends javax.swing.JInternalFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1)
-                    .addComponent(jLabel2))
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAtivar))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAtivar)
-                    .addComponent(jLabel2))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+                .addContainerGap(138, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(30, 30, 30)
                 .addComponent(btnFechar)
@@ -162,6 +118,9 @@ public class frmProdutoCadastradoPesquisa extends javax.swing.JInternalFrame {
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
         try {
+            frmCadastroProduto janela = new frmCadastroProduto(principal);
+            principal.add(janela);
+            janela.setVisible(true);
             this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
@@ -169,106 +128,56 @@ public class frmProdutoCadastradoPesquisa extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_btnFecharActionPerformed
 
-    private void cmbCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbCategoriaActionPerformed
-        try {
-            switch(cmbCategoria.getSelectedIndex()){
-                case 0: 
-                    btnAtivar.setEnabled(true);
-                    preencherTelaAlmox(); 
-                    break;
-                case 1: 
-                    btnAtivar.setEnabled(true);
-                    preencherTelaSist(); 
-                    break;
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }//GEN-LAST:event_cmbCategoriaActionPerformed
-
     private void tblResultadoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblResultadoMousePressed
         try {
-            if(btnAtivar.isSelected()){
-                int linha = tblResultado.getSelectedRow();
-                String codigo = tblResultado.getValueAt(linha,0).toString();
-                
-                switch(cmbCategoria.getSelectedIndex()){
-                    case 0:
-                        Produto produto = new ProdutoBR().consultar(
+            int linha = tblResultado.getSelectedRow();
+            String codigo = tblResultado.getValueAt(linha,0).toString();
+            Produto produto = new ProdutoBR().consultar(
                                 Integer.parseInt(codigo));
                         
-//                        frmCadastroFuncionario janela = new frmCadastroFuncionario(principal, produto);
-                        
-//                        principal.add(janela);
-//                        janela.setVisible(true);
-//                        this.dispose();
-                        break;
-                    case 1: 
-                        Usuario usuario = new UsuarioSisBR().consultar(Integer.parseInt(codigo));
-                        
-                        System.out.println(usuario.getEmail());
-                        
-                        frmCadastroFuncionario janela2 = new frmCadastroFuncionario(principal, usuario);
-                        
-                        principal.add(janela2);
-                        janela2.setVisible(true);
-                        this.dispose();
-                        break;
-                }
-            } else{
-                
-            }
+            frmCadastroProduto janela = new frmCadastroProduto(principal, produto);
+            principal.add(janela);
+            janela.setVisible(true);
+            this.dispose();
+            
         } catch (Exception e) {
 //            JOptionPane.showMessageDialog(rootPane, e.getMessage());
                 e.printStackTrace();
         }
     }//GEN-LAST:event_tblResultadoMousePressed
 
-    private void btnAtivarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtivarActionPerformed
-        if(btnAtivar.isSelected()){
-            btnAtivar.setText("Mouse ativado");
-            tblResultado.setEnabled(true);
-        } else{
-            tblResultado.setRowSelectionAllowed(false);
-            tblResultado.setEnabled(false);
-            btnAtivar.setText("Mouse desativado");
-        }
-        System.out.println(btnAtivar.isSelected());
-    }//GEN-LAST:event_btnAtivarActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JToggleButton btnAtivar;
     private javax.swing.JButton btnFechar;
-    private javax.swing.JComboBox<String> cmbCategoria;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable tblResultado;
     // End of variables declaration//GEN-END:variables
 
-    private void preencherTelaAlmox() {
+    private void preencherTelaPerec() {
         try {
             
             Vector<String> cabecalho = new Vector<>();
             cabecalho.add("Código");
-            cabecalho.add("Nome");
-            cabecalho.add("Matrícula");
+            cabecalho.add("Nome do Produto");
+            cabecalho.add("Descrição");
+            cabecalho.add("Valor Unitário");
+            cabecalho.add("Categoria");
+            cabecalho.add("Código de Busca");
             
             Vector detalhe = new Vector<>();
-            for (Funcionario funcionario : new FuncionarioDAO().listar()) {
+            new ProdutoBR().listar().forEach(produto -> {
                 Vector<String> linha = new Vector<>();
-                linha.add(funcionario.getId()+ "");
-                linha.add(funcionario.getNome());
-                linha.add(funcionario.getMatricula());
+                linha.add(produto.getId_prod()+ "");
+                linha.add(produto.getNome());
+                linha.add(produto.getDescricao());
+                linha.add(produto.getValorUnitario()+"");
+                linha.add(produto.getCategoria().getNome()+"");
+                linha.add(produto.getCodigoBusca()+"");
                 
                 detalhe.add(linha);
-            }
-            
-            
-            
+            });
             tblResultado.setModel(new DefaultTableModel(detalhe, cabecalho));
             
         } catch (Exception e) {
@@ -276,37 +185,7 @@ public class frmProdutoCadastradoPesquisa extends javax.swing.JInternalFrame {
         }
     }
     
-    private void preencherTelaSist() {
-        try {
-            
-            
-            Vector<String> cabecalho = new Vector<>();
-            cabecalho.add("Código do Usuário");
-            cabecalho.add("Nome");
-            cabecalho.add("Matrícula");
-            cabecalho.add("E-mail");
-            cabecalho.add("Senha");
-            cabecalho.add("Código do Funcionário");
-            cabecalho.add("CPF");
-            
-            Vector detalhe = new Vector<>();
-            for (Usuario usuarioSis : new UsuarioSistemaDAO().listar()) {
-                Vector<String> linha = new Vector<>();
-                linha.add(usuarioSis.getIdUsuario() + "");
-                linha.add(usuarioSis.getFuncionario().getNome());
-                linha.add(usuarioSis.getFuncionario().getMatricula());
-                linha.add(usuarioSis.getEmail());
-                linha.add(usuarioSis.getSenha());
-                linha.add(usuarioSis.getFuncionario().getId() + "");
-                linha.add(usuarioSis.getCpf() + "");
-                detalhe.add(linha);
-            }
-            
-            tblResultado.setModel(new DefaultTableModel(detalhe, cabecalho));
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-        }
-    }
+    
     
 
 }
