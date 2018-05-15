@@ -200,6 +200,11 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
 
         btnAlterar.setText("Alterar");
         btnAlterar.setEnabled(false);
+        btnAlterar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlterarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
         btnCancelar.addActionListener(new java.awt.event.ActionListener() {
@@ -441,7 +446,12 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
                     String codigoProd = tblGeral.getValueAt(linhaEnt,5).toString();
                     String quantidade = tblGeral.getValueAt(linhaEnt,2).toString();
                     String dataVal = tblGeral.getValueAt(linhaEnt,3).toString();
-                    System.out.println(dataVal);
+                    
+                    if(dataVal.equalsIgnoreCase("null")){
+                        cmbDia.setEnabled(false);
+                        cmbMes.setEnabled(false);
+                        cmbAno.setEnabled(false);
+                    }
                     
                     btnRegistrar.setEnabled(false);
                     btnAlterar.setEnabled(true);
@@ -492,6 +502,40 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
         this.dispose();
     }//GEN-LAST:event_btnFecharActionPerformed
+
+    private void btnAlterarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlterarActionPerformed
+        try {
+            String dataValidade = cmbDia.getItemAt(cmbDia.getSelectedIndex())
+                            + "/" + cmbMes.getItemAt(cmbMes.getSelectedIndex())
+                            + "/" + cmbAno.getItemAt(cmbAno.getSelectedIndex());
+            
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            Date dataEntrada = Calendar.getInstance().getTime();
+            Date dataVal = df.parse(dataValidade);
+            
+            EntradaProduto produtoEntAlt = new EntradaProduto();
+            if(cmbDia.isEnabled() && cmbMes.isEnabled() && cmbAno.isEnabled())
+                produtoEntAlt.setData_Validade(new java.sql.Date(dataVal.getTime()));
+            else
+                produtoEntAlt.setData_Validade(null);
+
+            produtoEntAlt.setData_Entrada(new java.sql.Date(dataEntrada.getTime()));
+            produtoEntAlt.setQuantidade(Double.parseDouble(txtQuantidade.getText()));
+            produtoEntAlt.setAcao(2);
+            produtoEntAlt.setProduto(
+                    new ProdutoBR().consultar(
+                            Integer.parseInt(txtCodProduto.getText())));
+            produtoEntAlt.setUsuario_Sis(frmPrincipalAlmoxarifado.usuarioSis);
+            produtoEntAlt.setId(Integer.parseInt(txtCodEntrada.getText()));
+            
+            new EntradaProdutoBR().salvar(produtoEntAlt);
+            JOptionPane.showMessageDialog(rootPane, "Alteração realizada com sucesso!");
+            limparTela();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }//GEN-LAST:event_btnAlterarActionPerformed
 
     
     

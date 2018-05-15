@@ -66,7 +66,7 @@ public class EntradaProdutoDAO {
         ps.setInt(5, entidade.getProduto().getId_prod());
         ps.setInt(6, entidade.getUsuario_Sis().getIdUsuario());
        
-        ps.setInt(8, entidade.getId());
+        ps.setInt(7, entidade.getId());
         ps.executeUpdate();
     }
     
@@ -103,9 +103,7 @@ public class EntradaProdutoDAO {
     public List<EntradaProduto> visualizarAll() throws SQLException{
         Connection con = util.Conexao.getConexao();
         
-        String sql = "SELECT *, TO_CHAR(data_validade, 'DD/MM/YYYY'),"
-                + " TO_CHAR(data_entrada, 'DD/MM/YYYY HH:MM:SS')"
-                + " FROM entrada ORDER BY id_entrada;";
+        String sql = "SELECT * FROM entrada ORDER BY id_entrada;";
         PreparedStatement ps = con.prepareStatement(sql);
         ResultSet rs = ps.executeQuery();
         
