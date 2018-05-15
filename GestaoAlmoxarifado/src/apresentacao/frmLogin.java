@@ -6,6 +6,7 @@
 package apresentacao;
 
 import entidade.Usuario;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import negocio.UsuarioSisBR;
 
@@ -109,9 +110,14 @@ public class frmLogin extends javax.swing.JFrame {
         try {
             Usuario usuario = new UsuarioSisBR().consultar(Long.parseLong(
                     txtCPF.getText()), String.valueOf(txtSenha.getPassword()));
-            new frmPrincipalAlmoxarifado(usuario).setVisible(true);
+            
+            if(usuario == null) System.out.println("CPF/Senha inválido. Digite novamente.");
+            else{
+                new frmPrincipalAlmoxarifado(usuario).setVisible(true);
+                this.dispose();
+            }
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, "CPF/Senha inválidos. Digite novamente");
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
     }//GEN-LAST:event_btnEntrarActionPerformed
 

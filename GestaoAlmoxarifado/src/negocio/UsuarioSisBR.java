@@ -16,11 +16,11 @@ import persistencia.UsuarioSistemaDAO;
  * @author rodri
  */
 public class UsuarioSisBR {
-    public void salvar(Usuario funcionario) throws SQLException{
-        if(funcionario.getIdUsuario()!= 0) 
-            new UsuarioSistemaDAO().alterar(funcionario);
+    public void salvar(Usuario usuarioSis) throws SQLException{
+        if(usuarioSis.getIdUsuario()!= 0) 
+            new UsuarioSistemaDAO().alterar(usuarioSis);
         else 
-            new UsuarioSistemaDAO().incluir(funcionario);
+            new UsuarioSistemaDAO().incluir(usuarioSis);
     }
     
     public void deletar(int codigo) throws SQLException{

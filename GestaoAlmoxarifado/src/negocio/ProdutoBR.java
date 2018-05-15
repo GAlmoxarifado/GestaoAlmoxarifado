@@ -10,9 +10,10 @@ import persistencia.ProdutoDao;
  * @author Savio
  */
 public class ProdutoBR {
-      public void salvar(Produto obj) throws SQLException{
-        if(obj.getId_prod() != 0) new ProdutoDao().alterar(obj);
-        else new ProdutoDao().inserir(obj);
+      public void salvar(Produto produto) throws SQLException{
+        if(produto.getId_prod() != null) 
+            new ProdutoDao().alterar(produto);
+        else new ProdutoDao().inserir(produto);
     }
     
     public void deletar(int codigo) throws SQLException{

@@ -22,6 +22,7 @@ import negocio.ProdutoBR;
  */
 public class frmProdutoCadastradoPesquisa extends javax.swing.JInternalFrame {
     
+    private boolean condTela;
     private JDesktopPane principal;
     /**
      * Creates new form frmTipoAssociadoPesquisa
@@ -31,9 +32,10 @@ public class frmProdutoCadastradoPesquisa extends javax.swing.JInternalFrame {
         preencherTelaPerec();
     }
     
-    public frmProdutoCadastradoPesquisa(JDesktopPane principal){
+    public frmProdutoCadastradoPesquisa(JDesktopPane principal, boolean condTela){
         this();
         this.principal = principal;
+        this.condTela = condTela;
     }
     
     
@@ -118,9 +120,15 @@ public class frmProdutoCadastradoPesquisa extends javax.swing.JInternalFrame {
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
         try {
-            frmCadastroProduto janela = new frmCadastroProduto(principal);
-            principal.add(janela);
-            janela.setVisible(true);
+            if(condTela == true){
+                frmCadastroProduto janela = new frmCadastroProduto(principal);
+                principal.add(janela);
+                janela.setVisible(true);
+            }else{
+                frmMovimentacao janela3 = new frmMovimentacao(principal);
+                principal.add(janela3);
+                janela3.setVisible(true);
+            }
             this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
@@ -130,16 +138,22 @@ public class frmProdutoCadastradoPesquisa extends javax.swing.JInternalFrame {
 
     private void tblResultadoMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblResultadoMousePressed
         try {
+            boolean condCat;
             int linha = tblResultado.getSelectedRow();
             String codigo = tblResultado.getValueAt(linha,0).toString();
             Produto produto = new ProdutoBR().consultar(
                                 Integer.parseInt(codigo));
-                        
-            frmCadastroProduto janela = new frmCadastroProduto(principal, produto);
-            principal.add(janela);
-            janela.setVisible(true);
+            condCat = produto.getCategoria().getId() == 1;
+            if(condTela == true){
+                frmCadastroProduto janela = new frmCadastroProduto(principal, produto);
+                principal.add(janela);
+                janela.setVisible(true);
+            }else{
+                frmMovimentacao janela3 = new frmMovimentacao(principal, produto, condCat);
+                principal.add(janela3);
+                janela3.setVisible(true);
+            }
             this.dispose();
-            
         } catch (Exception e) {
 //            JOptionPane.showMessageDialog(rootPane, e.getMessage());
                 e.printStackTrace();

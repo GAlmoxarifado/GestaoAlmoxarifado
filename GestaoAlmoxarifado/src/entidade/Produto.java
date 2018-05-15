@@ -23,7 +23,7 @@ public class Produto {
     }
 
     public Produto() {
-        this.categoria = new CategoriaProduto();
+//        categoria = new CategoriaProduto();
     }
     
     public String getNome() {

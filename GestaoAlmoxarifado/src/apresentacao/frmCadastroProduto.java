@@ -6,6 +6,7 @@
 package apresentacao;
 
 
+import entidade.CategoriaProduto;
 import entidade.Produto;
 
 import java.util.ArrayList;
@@ -174,24 +175,6 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel8)
-                    .addComponent(jLabel1))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtCodigoProd, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(69, 69, 69)
-                        .addComponent(jLabel7))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtCodBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnPesquisar)))
-                .addGap(18, 18, 18)
-                .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(40, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -214,6 +197,24 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
                             .addComponent(txtNome)
                             .addComponent(txtValorUnit, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(40, 40, 40))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel8)
+                    .addComponent(jLabel1))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtCodigoProd, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(69, 69, 69)
+                        .addComponent(jLabel7))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtCodBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnPesquisar)))
+                .addGap(18, 18, 18)
+                .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -262,26 +263,26 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         try {
-            ArrayList<String> textos = new ArrayList<>();
             
             Produto produto = new Produto();
-            
+
             produto.setCategoria(new CategoriaBR().consultar(cmbCategoria.getSelectedIndex()+1));
-            produto.setNome(txtNome.getText());
             produto.setCodigoBusca(Integer.parseInt(txtCodBusca.getText()));
+            produto.setNome(txtNome.getText());
             produto.setDescricao(txtAreaDesc.getText());
             produto.setValorUnitario(Double.parseDouble(txtValorUnit.getText()));
-            
-            
-            if(txtCodigoProd.getText() != null && !txtCodigoProd.getText().isEmpty())
+
+            if(txtCodigoProd.getText() != null && !txtCodigoProd.getText().isEmpty()){
                 produto.setId_prod(Integer.parseInt(txtCodigoProd.getText()));
-            
+            }
+
             new ProdutoBR().salvar(produto);
             
             limpar();
-            JOptionPane.showMessageDialog(rootPane, "Produto cadastrado com sucesso!");
+            JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+            e.printStackTrace();
+            //JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
 
         
@@ -297,7 +298,7 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         try {
-            frmProdutoCadastradoPesquisa janela = new frmProdutoCadastradoPesquisa(principal);
+            frmProdutoCadastradoPesquisa janela = new frmProdutoCadastradoPesquisa(principal, true);
             principal.add(janela);
             janela.setVisible(true);
             this.dispose();

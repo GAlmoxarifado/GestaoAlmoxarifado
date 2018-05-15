@@ -25,7 +25,7 @@ import persistencia.UsuarioSistemaDAO;
  * @author aluno
  */
 public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
-    
+    boolean condTela;
     private JDesktopPane principal;
     /**
      * Creates new form frmTipoAssociadoPesquisa
@@ -34,9 +34,10 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
         initComponents();
     }
     
-    public frmFuncionarioPesquisa(JDesktopPane principal){
+    public frmFuncionarioPesquisa(JDesktopPane principal, boolean condTela){
         this();
         this.principal = principal;
+        this.condTela = condTela;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -160,9 +161,15 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
 
     private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
         try {
-            frmCadastroFuncionario janela = new frmCadastroFuncionario(principal);            
-            principal.add(janela);
-            janela.setVisible(true);
+            if(condTela == true){
+                frmCadastroFuncionario janela2 = new frmCadastroFuncionario(principal);
+                principal.add(janela2);
+                janela2.setVisible(true);
+            }else{
+                frmMovimentacao janela3 = new frmMovimentacao(principal);
+                principal.add(janela3);
+                janela3.setVisible(true);
+            }
             this.dispose();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e.getMessage());
@@ -202,20 +209,25 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
                         
                         principal.add(janela);
                         janela.setVisible(true);
-                        this.dispose();
+                        
                         break;
                     case 1: 
                         Usuario usuario = new UsuarioSisBR().consultar(Integer.parseInt(codigo));
                         
                         System.out.println(usuario.getEmail());
                         
-                        frmCadastroFuncionario janela2 = new frmCadastroFuncionario(principal, usuario);
-                        
-                        principal.add(janela2);
-                        janela2.setVisible(true);
-                        this.dispose();
+                        if(condTela == true){
+                            frmCadastroFuncionario janela2 = new frmCadastroFuncionario(principal, usuario);
+                            principal.add(janela2);
+                            janela2.setVisible(true);
+                        }else{
+                            frmMovimentacao janela3 = new frmMovimentacao(principal, usuario);
+                            principal.add(janela3);
+                            janela3.setVisible(true);
+                        }
                         break;
                 }
+                this.dispose();
             } else{
                 
             }

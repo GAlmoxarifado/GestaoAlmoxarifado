@@ -122,27 +122,32 @@ public class UsuarioSistemaDAO {
     
     public Usuario consultar(long cpf, String senha) throws SQLException {
 
-        String sql = "SELECT id_usu_sis, email, senha, funcionario, cpf "
+        
+            String sql = "SELECT id_usu_sis, email, senha, funcionario, cpf "
                 + " FROM usuario_sis WHERE cpf = ? AND senha = ?;";
 
-        Connection cnn = util.Conexao.getConexao();
-        PreparedStatement prd = cnn.prepareStatement(sql);
-        prd.setLong(1, cpf);
-        prd.setString(2, senha);
+            Connection cnn = util.Conexao.getConexao();
+            PreparedStatement prd = cnn.prepareStatement(sql);
+            prd.setLong(1, cpf);
+            prd.setString(2, senha);
 
-        ResultSet rs = prd.executeQuery();
+            ResultSet rs = prd.executeQuery();
 
-        Usuario usuarioSis = new Usuario();
+            Usuario usuarioSis = new Usuario();
 
-        if (rs.next()) {
-            usuarioSis.setIdUsuario(rs.getInt("id_usu_sis"));
-            usuarioSis.setEmail(rs.getString("email"));
-            usuarioSis.setSenha(rs.getString("senha"));
-            usuarioSis.setFuncionario(new FuncionarioDAO().consultar(rs.getInt("funcionario")));
-            usuarioSis.setCpf(rs.getLong("cpf"));
-        }
+            if (rs.next()) {
+                usuarioSis.setIdUsuario(rs.getInt("id_usu_sis"));
+                usuarioSis.setEmail(rs.getString("email"));
+                usuarioSis.setSenha(rs.getString("senha"));
+                usuarioSis.setFuncionario(new FuncionarioDAO().consultar(rs.getInt("funcionario")));
+                usuarioSis.setCpf(rs.getLong("cpf"));
+                return usuarioSis;
+            } else 
+                throw new SQLException("Teste");
 
-        return usuarioSis;
+    //        System.out.println(usuarioSis.getCpf());
+
+            
 
     }
 

@@ -19,16 +19,19 @@ import util.Validation;
  */
 public class Teste {
     public static void main(String[] args) {
-        DateFormat c = new SimpleDateFormat("dd/MM/yyyy");
-        Date b = new Date();
-        Timestamp a = new Timestamp(b.getTime());
-//        try {
+        
+        try {
+            String dataT = null;
+            DateFormat c = new SimpleDateFormat("dd/MM/yyyy");
+            Date b = c.parse(dataT);
+            Timestamp a = new Timestamp(b.getTime());
+            System.out.println(b.getTime());
 //            String texto = " ";
 //            Validation.invalidCaracAndLetters(texto);
-//            //Validacao.invalidNumbers(texto);
-//        } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//        }
+            //Validacao.invalidNumbers(texto);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         
 //        String content = "G0dofredo";
 //        Pattern pattern = Pattern.compile("a-zA-Z|[0-9]]+");

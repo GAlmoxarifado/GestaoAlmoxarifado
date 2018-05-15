@@ -384,7 +384,7 @@ public class frmCadastroFuncionario extends javax.swing.JInternalFrame {
 
     private void btnPesquisarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarActionPerformed
         try {
-            frmFuncionarioPesquisa janela = new frmFuncionarioPesquisa(principal);
+            frmFuncionarioPesquisa janela = new frmFuncionarioPesquisa(principal, true);
             principal.add(janela);
             janela.setVisible(true);
             this.dispose();

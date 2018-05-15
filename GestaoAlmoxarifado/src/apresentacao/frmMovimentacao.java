@@ -8,7 +8,9 @@ package apresentacao;
 
 
 import entidade.EntradaProduto;
+import entidade.Produto;
 import entidade.SaidaProduto;
+import entidade.Usuario;
 import java.sql.Timestamp;
 import util.PopularCombo;
 import java.text.DateFormat;
@@ -33,7 +35,7 @@ import persistencia.SaidaProdutoDAO;
  */
 public class frmMovimentacao extends javax.swing.JInternalFrame implements PopularCombo{
     private JDesktopPane principal;
-    Calendar data = Calendar.getInstance();
+    private Usuario usuarioSis;
 
     /**
      * Creates new form frmTipoAssociadoCadoastr
@@ -43,20 +45,29 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
         popularCombo();
     }
     
+    public frmMovimentacao(JDesktopPane principal, Usuario usuarioSis){
+        this();
+        this.principal = principal;
+    }
+    
     public frmMovimentacao(JDesktopPane principal){
         this();
         this.principal = principal;
     }
     
-//    public frmInscricao(JDesktopPane principal, EJogo jogo){
-//        this();
-//        this.principal = principal;
-//    }
-//    
-//    public frmInscricao(JDesktopPane principal, ECampeonato campeonato){
-//        this();
-//        this.principal = principal;
-//    }
+    public frmMovimentacao(JDesktopPane principal, Produto produto, boolean condCat){
+        this();
+        if(condCat == true){
+            cmbDia.setEnabled(true);
+            cmbMes.setEnabled(true);
+            cmbAno.setEnabled(true);
+        } else {
+            cmbDia.setEnabled(false);
+            cmbMes.setEnabled(false);
+            cmbAno.setEnabled(false);
+        }
+        txtIdProduto.setText(produto.getId_prod()+"");
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -144,11 +155,11 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
 
         jLabel4.setText("Validade");
 
-        cmbDia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbDia.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "      " }));
 
-        cmbMes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbMes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "      " }));
 
-        cmbAno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cmbAno.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "      " }));
 
         jLabel5.setText("Nome");
 
@@ -167,8 +178,18 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
 
         btnPesquisarFuncionario.setText("Pesquisar funcionário");
         btnPesquisarFuncionario.setEnabled(false);
+        btnPesquisarFuncionario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarFuncionarioActionPerformed(evt);
+            }
+        });
 
         btnPesquisarProd.setText("Produtos cadastrados");
+        btnPesquisarProd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPesquisarProdActionPerformed(evt);
+            }
+        });
 
         jLabel8.setText("Código da entrada");
 
@@ -328,6 +349,7 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
                     produtoEnt.setProduto(
                             new ProdutoBR().consultar(
                                     Integer.parseInt(txtIdProduto.getText())));
+                    produtoEnt.setUsuario_Sis(usuarioSis);
                     
                     if(txtCodEntrada.getText() != null || !txtCodEntrada.getText().isEmpty())
                         produtoEnt.setId(Integer.parseInt(txtCodEntrada.getText()));
@@ -368,6 +390,28 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
             case 2: break;
         }
     }//GEN-LAST:event_tblGeralMousePressed
+
+    private void btnPesquisarFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarFuncionarioActionPerformed
+        try {
+            frmFuncionarioPesquisa janela = new frmFuncionarioPesquisa(principal, false);
+            principal.add(janela);
+            janela.setVisible(true);
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }//GEN-LAST:event_btnPesquisarFuncionarioActionPerformed
+
+    private void btnPesquisarProdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarProdActionPerformed
+        try {
+            frmProdutoCadastradoPesquisa janela = new frmProdutoCadastradoPesquisa(principal, false);
+            principal.add(janela);
+            janela.setVisible(true);
+            this.dispose();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }//GEN-LAST:event_btnPesquisarProdActionPerformed
 
     private void limparTela(){
         txtIdProduto.setText("");
@@ -499,11 +543,8 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
     }
     
     private void habilitarSaid(boolean cond) {
-        btnPesquisarProd.setEnabled(cond);
-        txtIdProduto.setEnabled(cond);
-        txtQuantidade.setEnabled(cond);
-        cmbDia.setEnabled(cond);
-        cmbMes.setEnabled(cond);
-        cmbAno.setEnabled(cond);
+        txtNomeFuncionario.setEnabled(cond);
+        txtMatriculaFunc.setEnabled(cond);
+        btnPesquisarFuncionario.setEnabled(cond);
     }
 }
