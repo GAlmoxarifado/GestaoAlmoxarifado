@@ -143,6 +143,7 @@ public class frmProdutoCadastradoPesquisa extends javax.swing.JInternalFrame {
             String codigo = tblResultado.getValueAt(linha,0).toString();
             Produto produto = new ProdutoBR().consultar(
                                 Integer.parseInt(codigo));
+            
             condCat = produto.getCategoria().getId() == 1;
             if(condTela == true){
                 frmCadastroProduto janela = new frmCadastroProduto(principal, produto);

@@ -17,23 +17,22 @@ public class SaidaProdutoDAO {
     public void inserir(SaidaProduto entidade) throws SQLException{
         Connection con = util.Conexao.getConexao();
         
-        String sql = "INSERT INTO saida (id_Saida , data_saida, quantidade,"
-                + " produto, funcionario) VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO saida (data_saida, quantidade,"
+                + " produto, funcionario) VALUES (?,?,?,?)";
         
         PreparedStatement ps = con.prepareStatement(sql);
-        ps.setInt(1, entidade.getId());
-        ps.setDate(2, entidade.getData_Saida());
-        ps.setDouble(3, entidade.getQuantidade());
-        ps.setInt(4, entidade.getEntradaProduto().getId());
-        ps.setInt(5, entidade.getFuncionario().getId());
+        ps.setDate(1, entidade.getData_Saida());
+        ps.setDouble(2, entidade.getQuantidade());
+        ps.setInt(3, entidade.getEntradaProduto().getId());
+        ps.setInt(4, entidade.getFuncionario().getId());
        
         ps.execute();
         
-        String sql2 = "SELECT currval('saida_id_saida_seq');";
+        String sql2 = "SELECT currval('saida_id_saida_seq') as id_saida;";
         Statement sta = con.createStatement();
         ResultSet rs = sta.executeQuery(sql2);
         while(rs.next()){
-            entidade.setId(rs.getInt(1));
+            entidade.setId(rs.getInt("id_saida"));
         }
     }
     

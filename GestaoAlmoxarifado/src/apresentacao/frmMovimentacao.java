@@ -52,6 +52,8 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
         cmbDia.setSelectedIndex(0);
         cmbMes.setSelectedIndex(0);
         cmbAno.setSelectedIndex(0);
+        cmbTipoMovimentacao.setEnabled(true);
+        cmbTipoMovimentacao.setSelectedIndex(0);
         txtCodSaida.setText("");
         txtCodFuncionario.setText("");
         txtNomeFuncionario.setText("");
@@ -80,8 +82,12 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
     public frmMovimentacao(JDesktopPane principal, Funcionario func, int codigoS){
         this();
         this.funcionario = func;
-        this.codigoS = codigoS;
-        preencherSai(func);
+        preencherSai(func, codigoS);
+        habilitarSaid(true);
+        habilitarEnt(false);
+        cmbTipoMovimentacao.setEnabled(false);
+        txtQuantidade.setEnabled(true);
+        cmbTipoMovimentacao.setSelectedIndex(1);
     }
     
     public frmMovimentacao(JDesktopPane principal, Produto produto, boolean condCat){
@@ -364,6 +370,7 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
         switch(cmbTipoMovimentacao.getSelectedIndex()+1){
             case 1:
                 habilitarEnt(true);
+                txtQuantidade.setEnabled(true);
                 habilitarSaid(false);
                 preencherTabela(cmbTipoMovimentacao.getSelectedIndex()+1);
                 break;
@@ -377,8 +384,8 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
 
     private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
         try {
-           switch(cmbTipoMovimentacao.getSelectedIndex()+1){
-                case 1:
+           switch(cmbTipoMovimentacao.getSelectedIndex()){
+                case 0:
                     String dataValidade = cmbDia.getItemAt(cmbDia.getSelectedIndex())
                             + "/" + cmbMes.getItemAt(cmbMes.getSelectedIndex())
                             + "/" + cmbAno.getItemAt(cmbAno.getSelectedIndex());
@@ -406,7 +413,7 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
                     JOptionPane.showMessageDialog(rootPane, "Entrada registrada com sucesso!");
                     limparTela();
                     break;
-                case 2:
+                case 1:
                     SaidaProduto produtoSaida = new SaidaProduto();
                     Date dataSaida = Calendar.getInstance().getTime();
                     produtoSaida.setData_Saida(new java.sql.Date(dataSaida.getTime()));
@@ -418,7 +425,7 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
                             new FuncionarioDAO().consultar(
                                     Integer.parseInt(txtCodFuncionario.getText())));
                     
-                    if(txtCodSaida.getText() != null || !txtCodSaida.getText().isEmpty())
+                    if(txtCodSaida.getText() != null && !txtCodSaida.getText().isEmpty())
                         produtoSaida.setId(Integer.parseInt(txtCodSaida.getText()));
                     
                     new EntradaProdutoBR().alterarQuantidade(new EntradaProdutoBR().consultar(
@@ -653,11 +660,12 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
         return cabecalho;
     }
     
-    private void preencherSai(Funcionario func){
+    private void preencherSai(Funcionario func, int codEnt){
         try {
             txtCodFuncionario.setText(func.getId()+"");
             txtNomeFuncionario.setText(func.getNome());
             txtMatriculaFunc.setText(func.getMatricula());
+            txtCodEntrada.setText(Integer.toString(codEnt));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
@@ -666,7 +674,6 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
     private void habilitarEnt(boolean cond) {
         btnPesquisarProd.setEnabled(cond);
         txtCodProduto.setEnabled(cond);
-        txtQuantidade.setEnabled(cond);
         cmbDia.setEnabled(cond);
         cmbMes.setEnabled(cond);
         cmbAno.setEnabled(cond);

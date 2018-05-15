@@ -11,7 +11,7 @@ import persistencia.SaidaProdutoDAO;
  */
 public class SaidaProdutoBR {
     public void salvar(SaidaProduto obj) throws SQLException{
-        if(obj.getId() != 0) new SaidaProdutoDAO().alterar(obj);
+        if(obj.getId() != null) new SaidaProdutoDAO().alterar(obj);
         else new SaidaProdutoDAO().inserir(obj);
         
     }
