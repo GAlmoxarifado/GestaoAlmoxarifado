@@ -58,7 +58,7 @@
                   </Group>
                   <Group type="102" attributes="0">
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="txtIdProduto" pref="82" max="32767" attributes="0"/>
+                          <Component id="txtCodProduto" pref="82" max="32767" attributes="0"/>
                           <Component id="txtQuantidade" max="32767" attributes="0"/>
                           <Component id="txtCodEntrada" alignment="0" max="32767" attributes="0"/>
                       </Group>
@@ -128,7 +128,7 @@
               <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="btnPesquisarProd" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="txtIdProduto" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="txtCodProduto" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel1" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="txtNomeFuncionario" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -163,7 +163,7 @@
         <Property name="text" type="java.lang.String" value="C&#xf3;digo Produto"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="txtIdProduto">
+    <Component class="javax.swing.JTextField" name="txtCodProduto">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
       </Properties>
@@ -300,11 +300,17 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Cancelar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnFechar">
       <Properties>
         <Property name="text" type="java.lang.String" value="Fechar"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFecharActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnPesquisarFuncionario">
       <Properties>

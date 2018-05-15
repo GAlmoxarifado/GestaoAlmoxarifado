@@ -32,9 +32,14 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
         txtCodigoProd.setText("");
         txtCodBusca.setText("");
         txtNome.setText("");
+        txtAreaDesc.setText("");
         txtValorUnit.setText("");
         cmbCategoria.setSelectedIndex(0);
         cmbCategoria.setEnabled(true);
+        lblAvisoCodBusca.setText("");
+        lblAvisoNome.setText("");
+        lblAvisoDescricao.setText("");
+        lblAvisoValorUnit.setText("");
     }
     
     /**
@@ -42,7 +47,7 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
      */
     public frmCadastroProduto() {
         initComponents();
-        
+        limpar();
     }
     
     public frmCadastroProduto(JDesktopPane principal, Produto produto){
@@ -86,6 +91,10 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
         jLabel8 = new javax.swing.JLabel();
         txtCodBusca = new javax.swing.JTextField();
         txtValorUnit = new javax.swing.JTextField();
+        lblAvisoCodBusca = new javax.swing.JLabel();
+        lblAvisoNome = new javax.swing.JLabel();
+        lblAvisoDescricao = new javax.swing.JLabel();
+        lblAvisoValorUnit = new javax.swing.JLabel();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -165,11 +174,25 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
 
         jLabel8.setText("Código de busca:");
 
+        txtCodBusca.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCodBuscaKeyTyped(evt);
+            }
+        });
+
         txtValorUnit.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtValorUnitKeyPressed(evt);
             }
         });
+
+        lblAvisoCodBusca.setText("Aviso Cod Busca");
+
+        lblAvisoNome.setText("Aviso Nome");
+
+        lblAvisoDescricao.setText("Aviso descrição");
+
+        lblAvisoValorUnit.setText("Aviso valor");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -195,7 +218,10 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 348, Short.MAX_VALUE)
                             .addComponent(txtNome)
-                            .addComponent(txtValorUnit, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addComponent(txtValorUnit, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblAvisoNome, javax.swing.GroupLayout.PREFERRED_SIZE, 219, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblAvisoDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblAvisoValorUnit, javax.swing.GroupLayout.PREFERRED_SIZE, 211, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addGap(40, 40, 40))
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
@@ -203,18 +229,23 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
                     .addComponent(jLabel8)
                     .addComponent(jLabel1))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtCodigoProd, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(69, 69, 69)
-                        .addComponent(jLabel7))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtCodigoProd, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(69, 69, 69)
+                                .addComponent(jLabel7))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtCodBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnPesquisar)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cmbCategoria, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtCodBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnPesquisar)))
-                .addGap(18, 18, 18)
-                .addComponent(cmbCategoria, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(lblAvisoCodBusca, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -230,22 +261,30 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
                     .addComponent(txtCodBusca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel8)
                     .addComponent(btnPesquisar))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 38, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(txtNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblAvisoCodBusca)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(66, 66, 66)))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(txtNome, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblAvisoNome, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(52, 52, 52)
+                        .addComponent(jLabel3)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblAvisoDescricao, javax.swing.GroupLayout.PREFERRED_SIZE, 17, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel6)
-                    .addComponent(txtValorUnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(58, 58, 58)
+                    .addComponent(txtValorUnit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel6))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblAvisoValorUnit)
+                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnCadastrar)
                     .addComponent(btnExcluir)
@@ -263,6 +302,19 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
 
     private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
         try {
+            ArrayList<String> lista = new ArrayList<>();
+            lista.add(txtCodBusca.getText());
+            lista.add(txtNome.getText());
+            lista.add(txtAreaDesc.getText());
+            lista.add(txtValorUnit.getText());
+            Validation.isEmpty(lista);
+            Validation.invalidSpaces(txtCodBusca.getText());
+            Validation.invalidCaracAndLetters(txtCodBusca.getText());
+            Validation.invalidCaracAndNumbers(txtNome.getText());
+//            Validation.invalidEspecCaracters("[\u0021-\u0026|\u0028-\u0040|"
+//                    + "\\u005B-\u0060|\u007B-\u00BC]", txtNome.getName());
+            Validation.invalidSpaces(txtValorUnit.getText());
+            Validation.invalidCaracAndLetters(txtValorUnit.getText());
             
             Produto produto = new Produto();
 
@@ -270,7 +322,7 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
             produto.setCodigoBusca(Integer.parseInt(txtCodBusca.getText()));
             produto.setNome(txtNome.getText());
             produto.setDescricao(txtAreaDesc.getText());
-            produto.setValorUnitario(Double.parseDouble(txtValorUnit.getText()));
+            produto.setValorUnitario(Double.parseDouble(txtValorUnit.getText().replace(',', '.')));
 
             if(txtCodigoProd.getText() != null && !txtCodigoProd.getText().isEmpty()){
                 produto.setId_prod(Integer.parseInt(txtCodigoProd.getText()));
@@ -282,7 +334,7 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "Produto cadastrado com sucesso!");
         } catch (Exception e) {
             e.printStackTrace();
-            //JOptionPane.showMessageDialog(rootPane, e.getMessage());
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
 
         
@@ -309,9 +361,11 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
 
     private void txtNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtNomeKeyPressed
         try {
-            Validation.limitMaxCaracter(255, txtNome.getText(), evt);
+            Validation.limitMaxCaracter(60, txtNome.getText(), evt);
+            Validation.invalidEspecCaracters("[\u0021-\u0026|\u0028-\u0040|"
+                    + "\\u005B-\u0060|\u007B-\u00BC]",txtNome.getName());
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+            lblAvisoNome.setText(e.getMessage());
         }
     }//GEN-LAST:event_txtNomeKeyPressed
 
@@ -337,19 +391,28 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
     private void txtAreaDescKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtAreaDescKeyPressed
         try {
             Validation.limitMaxCaracter(255, txtAreaDesc.getText(), evt);
+            if(txtAreaDesc.getText().isEmpty())
+                lblAvisoDescricao.setText("");
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+            lblAvisoDescricao.setText(e.getMessage());
         }
     }//GEN-LAST:event_txtAreaDescKeyPressed
 
     private void txtValorUnitKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtValorUnitKeyPressed
         try {
             Validation.limitMaxCaracter(8, txtValorUnit.getText(), evt);
-            Validation.invalidSpaces(txtValorUnit.getText());
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+            lblAvisoValorUnit.setText(e.getMessage());
         }
     }//GEN-LAST:event_txtValorUnitKeyPressed
+
+    private void txtCodBuscaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodBuscaKeyTyped
+        try {
+            Validation.limitMaxCaracter(15, txtCodBusca.getText(), evt);
+        } catch (Exception e) {
+            lblAvisoValorUnit.setText(e.getMessage());
+        }
+    }//GEN-LAST:event_txtCodBuscaKeyTyped
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -368,6 +431,10 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JPasswordField jPasswordField1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblAvisoCodBusca;
+    private javax.swing.JLabel lblAvisoDescricao;
+    private javax.swing.JLabel lblAvisoNome;
+    private javax.swing.JLabel lblAvisoValorUnit;
     private javax.swing.JTextArea txtAreaDesc;
     private javax.swing.JTextField txtCodBusca;
     private javax.swing.JTextField txtCodigoProd;
@@ -386,5 +453,6 @@ public class frmCadastroProduto extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
     }
+    
     
 }

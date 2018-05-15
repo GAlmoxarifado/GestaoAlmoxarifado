@@ -31,7 +31,7 @@ public class UsuarioSisBR {
         return new UsuarioSistemaDAO().consultar(codigo);
     }
     
-    public Usuario consultar(long cpf, String senha) throws SQLException{
+    public Usuario consultar(String cpf, String senha) throws SQLException{
         return new UsuarioSistemaDAO().consultar(cpf, senha);
     }
     

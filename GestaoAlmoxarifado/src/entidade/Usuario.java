@@ -14,7 +14,7 @@ public class Usuario {
     private int idUsuario;
     private String email;
     private String senha;
-    private long cpf;
+    private String cpf;
     private Funcionario funcionario;
     
     public Usuario(){
@@ -26,7 +26,7 @@ public class Usuario {
     }
     
     public Usuario(Funcionario funcionario, int idUsuario, String email, String senha,
-            long cpf){
+            String cpf){
         this.funcionario = funcionario;
         this.idUsuario = idUsuario;
         this.email = email;
@@ -58,11 +58,11 @@ public class Usuario {
         this.senha = senha;
     }
 
-    public long getCpf() {
+    public String getCpf() {
         return cpf;
     }
 
-    public void setCpf(long cpf) {
+    public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 

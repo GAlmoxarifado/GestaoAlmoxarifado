@@ -14,11 +14,10 @@ public class EntradaProduto {
     private int acao;
     private Produto produto;
     private Usuario usuario_Sis;
-    private Funcionario funcionario;
 
     public EntradaProduto(Integer id, Date data_Validade, Date dataEntrada, 
             Double quantidade, int acao, Produto produto, 
-            Usuario usuario_Sis, Funcionario funcionario) {
+            Usuario usuario_Sis) {
         this.id = id;
         this.data_Validade = data_Validade;
         this.data_Entrada = dataEntrada;
@@ -26,7 +25,6 @@ public class EntradaProduto {
         this.acao = acao;
         this.produto = produto;
         this.usuario_Sis = usuario_Sis;
-        this.funcionario = funcionario;
     }
 
    
@@ -88,14 +86,5 @@ public class EntradaProduto {
 
     public void setUsuario_Sis(Usuario usuario_Sis) {
         this.usuario_Sis = usuario_Sis;
-    }
-
-    public Funcionario getFuncionario() {
-        return funcionario;
-    }
-
-    public void setFuncionario(Funcionario funcionario) {
-        this.funcionario = funcionario;
-    }
-    
+    }    
 }

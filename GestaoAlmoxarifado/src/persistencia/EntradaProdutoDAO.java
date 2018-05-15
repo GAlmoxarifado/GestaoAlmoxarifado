@@ -18,45 +18,44 @@ public class EntradaProdutoDAO {
     public void inserir(EntradaProduto produtoEnt) throws SQLException{
         Connection con = util.Conexao.getConexao();
         
-        String sql = "INSERT INTO ENTRADA (id_Entrada, data_Validade, data_Entrada, quantidade, acao,"
-                + " produto, usuario_Sis, funcionario) VALUES (?,?,?,?,?,"
-                + "?,?,?)";
+        String sql = "INSERT INTO entrada (data_validade, data_entrada, quantidade, acao,"
+                + " produto, usuario_sis) VALUES (?,?,?,?,?,?);";
         
         PreparedStatement ps = con.prepareStatement(sql);
-        ps.setInt(1, produtoEnt.getId());
-        ps.setDate(2, produtoEnt.getData_Validade());
-        ps.setDate(3, produtoEnt.getData_Entrada());
-        ps.setDouble(4, produtoEnt.getQuantidade());
-        ps.setInt(5, produtoEnt.getAcao());
-       
-        ps.setInt(6, produtoEnt.getProduto().getId_prod());
-        ps.setInt(7, produtoEnt.getUsuario_Sis().getIdUsuario());
-        ps.setInt(8, produtoEnt.getFuncionario().getId());
+        
+        ps.setDate(1, produtoEnt.getData_Validade());
+        ps.setDate(2, produtoEnt.getData_Entrada());
+        ps.setDouble(3, produtoEnt.getQuantidade());
+        ps.setInt(4, produtoEnt.getAcao());
+        ps.setInt(5, produtoEnt.getProduto().getId_prod());
+        ps.setInt(6, produtoEnt.getUsuario_Sis().getIdUsuario());
        
         ps.execute();
         
-        String sql2 = "SELECT currval('entrada_id_entrada_seq');";
+        String sql2 = "SELECT currval('entrada_id_entrada_seq') as id_entrada;";
         Statement sta = con.createStatement();
         ResultSet rs = sta.executeQuery(sql2);
         while(rs.next()){
-            produtoEnt.setId(rs.getInt(1));
+            produtoEnt.setId(rs.getInt("id_entrada"));
         }
     }
     
     public void deletar(int id) throws SQLException{
         Connection con = util.Conexao.getConexao();
         
-        String sql = "DELETE FROM ENTRADA WHERE id_Entrada=?;";
+        String sql = "DELETE FROM entrada WHERE id_entrada=?;";
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setInt(1, id);
         ps.execute();
     }
+    
     public void alterar(EntradaProduto entidade) throws SQLException{
         Connection con = util.Conexao.getConexao();
         
-        String sql = "UPDATE ENTRADA SET data_Validade =?, data_Entrada=?, quantidade=?, acao=?,"
-                + " produto=?, usuario_Sis=?, funcionario=?"
-                + " WHERE id_Entrada=?;";
+        String sql = "UPDATE entrada SET data_validade = ?, data_entrada = ?,"
+                + " quantidade = ?, acao = ?,"
+                + " produto=?, usuario_sis = ?"
+                + " WHERE id_entrada = ?;";
         
         PreparedStatement ps = con.prepareStatement(sql);
         ps.setDate(1, entidade.getData_Validade());
@@ -66,9 +65,19 @@ public class EntradaProdutoDAO {
         
         ps.setInt(5, entidade.getProduto().getId_prod());
         ps.setInt(6, entidade.getUsuario_Sis().getIdUsuario());
-        ps.setInt(7, entidade.getFuncionario().getId());
        
         ps.setInt(8, entidade.getId());
+        ps.executeUpdate();
+    }
+    
+    public void alterarQuantidade(EntradaProduto entidade, Double quantidade) throws SQLException{
+        Connection con = util.Conexao.getConexao();
+        
+        String sql = "UPDATE entrada SET quantidade = ? WHERE id_entrada = ?;";
+        
+        PreparedStatement ps = con.prepareStatement(sql);
+        ps.setDouble(1, entidade.getQuantidade() - quantidade);
+        ps.setInt(2, entidade.getId());
         ps.executeUpdate();
     }
     
@@ -86,8 +95,7 @@ public class EntradaProdutoDAO {
             return new EntradaProduto(rs.getInt(1), rs.getDate(2), 
                     rs.getDate(3), rs.getDouble(4), rs.getInt(5), 
                     new ProdutoDao().visualizarUm(rs.getInt(6)), 
-                    new UsuarioSistemaDAO().consultar(rs.getInt(7)), 
-                    new FuncionarioDAO().consultar(rs.getInt(8)));
+                    new UsuarioSistemaDAO().consultar(rs.getInt(7)));
         }
         return null;
     }
@@ -106,8 +114,7 @@ public class EntradaProdutoDAO {
             lista.add(new EntradaProduto(rs.getInt(1), rs.getDate(2), 
                     rs.getDate(3), rs.getDouble(4), rs.getInt(5), 
                     new ProdutoDao().visualizarUm(rs.getInt(6)), 
-                    new UsuarioSistemaDAO().consultar(rs.getInt(7)), 
-                    new FuncionarioDAO().consultar(rs.getInt(8))));
+                    new UsuarioSistemaDAO().consultar(rs.getInt(7))));
         }
         return lista;
     }

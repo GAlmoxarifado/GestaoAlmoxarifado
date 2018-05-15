@@ -26,6 +26,7 @@ import persistencia.UsuarioSistemaDAO;
  */
 public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
     boolean condTela;
+    int codEnt;
     private JDesktopPane principal;
     /**
      * Creates new form frmTipoAssociadoPesquisa
@@ -34,10 +35,15 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
         initComponents();
     }
     
-    public frmFuncionarioPesquisa(JDesktopPane principal, boolean condTela){
+    public frmFuncionarioPesquisa(JDesktopPane principal, boolean condTela, int codEnt){
         this();
         this.principal = principal;
         this.condTela = condTela;
+        if(condTela == false) {
+            cmbCategoria.setSelectedIndex(0);
+            cmbCategoria.setEnabled(false);
+        }
+        this.codEnt = codEnt;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -204,12 +210,16 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
                     case 0:
                         Funcionario func = new FuncionarioBR().consultar(
                                 Integer.parseInt(codigo));
+                        if(condTela == true){
+                            frmCadastroFuncionario janela = new frmCadastroFuncionario(principal, func);
                         
-                        frmCadastroFuncionario janela = new frmCadastroFuncionario(principal, func);
-                        
-                        principal.add(janela);
-                        janela.setVisible(true);
-                        
+                            principal.add(janela);
+                            janela.setVisible(true);
+                        } else{
+                            frmMovimentacao janela3 = new frmMovimentacao(principal, func, codEnt);
+                            principal.add(janela3);
+                            janela3.setVisible(true);
+                        }
                         break;
                     case 1: 
                         Usuario usuario = new UsuarioSisBR().consultar(Integer.parseInt(codigo));
@@ -221,9 +231,9 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
                             principal.add(janela2);
                             janela2.setVisible(true);
                         }else{
-                            frmMovimentacao janela3 = new frmMovimentacao(principal, usuario);
-                            principal.add(janela3);
-                            janela3.setVisible(true);
+                            frmMovimentacao janela4 = new frmMovimentacao(principal, usuario);
+                            principal.add(janela4);
+                            janela4.setVisible(true);
                         }
                         break;
                 }
@@ -311,7 +321,7 @@ public class frmFuncionarioPesquisa extends javax.swing.JInternalFrame {
                 linha.add(usuarioSis.getEmail());
                 linha.add(usuarioSis.getSenha());
                 linha.add(usuarioSis.getFuncionario().getId() + "");
-                linha.add(usuarioSis.getCpf() + "");
+                linha.add(usuarioSis.getCpf());
                 detalhe.add(linha);
             }
             

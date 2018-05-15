@@ -16,22 +16,27 @@ import java.util.regex.Pattern;
 /**
  * Utilitário para validação de string.
  * 
+ * <p> Para a validação dos caracteres foi usado Expressões Regulares, mais 
+ * precisamente o Unicode. Caso queira consultar mais caracteres, acesse a
+ * <a href=https://unicode-table.com/pt/#control-character>Tabela de Caracteres
+ * Unicode</a>.</p>
+ * 
  * @author Rodrigo Leite
  */
 public class Validation {
     
     /**
-     * Limita a quantidade de caracteres em um campo de texto a partir da ação
-     * das teclas do teclado.
+     * Limita a quantidade máxima de caracteres em um campo de texto a partir da 
+     * ação das teclas do teclado.
      * 
-     * <p> A {@code String} faz referência ao que for digitado em um
-     * campo de texto, sendo avaliado seu tamanho e posteriormente sendo
-     * limitado.
+     * <p> A {@code String} faz referência ao que for digitado,
+     * sendo avaliado seu tamanho e posteriormente sendo
+     * limitado.</p>
      * 
      * 
      * @param quantidadeMax Quantidade limite de caracteres
-     * @param texto String a ser limitada
-     * @param evt Ação da tecla do teclado
+     * @param texto String a ser verificada
+     * @param evt Ação da tecla
      * @throws Exception Alerta de limite
      */
     public static void limitMaxCaracter(int quantidadeMax, String texto, KeyEvent evt) throws Exception{
@@ -41,12 +46,35 @@ public class Validation {
         }
     }
     
+    /**
+     * Limita a quantidade mínima de caracteres de uma {@code String}.
+     * 
+     * <p> A {@code String} faz referência ao que for digitado, 
+     * sendo avaliado seu tamanho e posteriormente sendo
+     * limitado</p>
+     * 
+     * 
+     * 
+     * @param quantidadeMin Quantidade mínima de caracteres
+     * @param texto String a ser verificada
+     * @throws Exception Alerta de falta de caracter 
+     */
     public static void limitMinCaracter(int quantidadeMin, String texto) throws Exception{
         if(texto.trim().length() < quantidadeMin){
             throw new Exception("Quantidade mínima de caracteres: " + quantidadeMin);
         }
     }
     
+    /**
+     * Limita o máximo e o mínimo de caracteres de uma {@code String}.
+     * 
+     * 
+     * 
+     * @param quantidadeMax
+     * @param quantidadeMin
+     * @param texto
+     * @throws Exception 
+     */
     public static void limitMaxMinCaracter(int quantidadeMax, int quantidadeMin, String texto) throws Exception{
         if(texto.trim().length() < quantidadeMin || texto.trim().length() >= quantidadeMax){
             throw new Exception("Quantidade mínima de caracteres: " + quantidadeMin +
@@ -78,6 +106,15 @@ public class Validation {
             if(matcher.find()){
                 throw new Exception("Caracter(es) inválidos!");
             }
+        }
+    }
+    
+    public static void invalidEspecCaracters(String regex, String texto) throws Exception{
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(texto);
+        
+        if(matcher.find()){
+            throw new Exception("Caracter(es) inválidos!");
         }
     }
     

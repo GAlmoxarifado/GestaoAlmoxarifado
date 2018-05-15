@@ -8,6 +8,7 @@ package apresentacao;
 
 
 import entidade.EntradaProduto;
+import entidade.Funcionario;
 import entidade.Produto;
 import entidade.SaidaProduto;
 import entidade.Usuario;
@@ -26,6 +27,7 @@ import javax.swing.table.DefaultTableModel;
 import negocio.EntradaProdutoBR;
 import negocio.ProdutoBR;
 import negocio.SaidaProdutoBR;
+import negocio.UsuarioSisBR;
 import persistencia.FuncionarioDAO;
 import persistencia.SaidaProdutoDAO;
 
@@ -35,7 +37,26 @@ import persistencia.SaidaProdutoDAO;
  */
 public class frmMovimentacao extends javax.swing.JInternalFrame implements PopularCombo{
     private JDesktopPane principal;
-    private Usuario usuarioSis;
+    Usuario usuarioSis;
+    Funcionario funcionario;
+    int codigoS;
+    
+    private void limparTela(){
+        habilitarEnt(true);
+        habilitarSaid(false);
+        btnRegistrar.setEnabled(true);
+        btnAlterar.setEnabled(false);
+        txtCodEntrada.setText("");
+        txtCodProduto.setText("");
+        txtQuantidade.setText("");
+        cmbDia.setSelectedIndex(0);
+        cmbMes.setSelectedIndex(0);
+        cmbAno.setSelectedIndex(0);
+        txtCodSaida.setText("");
+        txtCodFuncionario.setText("");
+        txtNomeFuncionario.setText("");
+        txtMatriculaFunc.setText("");
+    }
 
     /**
      * Creates new form frmTipoAssociadoCadoastr
@@ -48,11 +69,19 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
     public frmMovimentacao(JDesktopPane principal, Usuario usuarioSis){
         this();
         this.principal = principal;
+        this.usuarioSis = usuarioSis;
     }
     
     public frmMovimentacao(JDesktopPane principal){
         this();
         this.principal = principal;
+    }
+    
+    public frmMovimentacao(JDesktopPane principal, Funcionario func, int codigoS){
+        this();
+        this.funcionario = func;
+        this.codigoS = codigoS;
+        preencherSai(func);
     }
     
     public frmMovimentacao(JDesktopPane principal, Produto produto, boolean condCat){
@@ -66,7 +95,7 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
             cmbMes.setEnabled(false);
             cmbAno.setEnabled(false);
         }
-        txtIdProduto.setText(produto.getId_prod()+"");
+        txtCodProduto.setText(produto.getId_prod()+"");
     }
 
     /**
@@ -80,7 +109,7 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
 
         jLabel7 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        txtIdProduto = new javax.swing.JTextField();
+        txtCodProduto = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         cmbTipoMovimentacao = new javax.swing.JComboBox<>();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -115,7 +144,7 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
 
         jLabel1.setText("Código Produto");
 
-        txtIdProduto.setEditable(false);
+        txtCodProduto.setEditable(false);
 
         jLabel2.setText("Tipo de movimentação");
 
@@ -173,8 +202,18 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
         btnAlterar.setEnabled(false);
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnFechar.setText("Fechar");
+        btnFechar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFecharActionPerformed(evt);
+            }
+        });
 
         btnPesquisarFuncionario.setText("Pesquisar funcionário");
         btnPesquisarFuncionario.setEnabled(false);
@@ -233,7 +272,7 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
                         .addComponent(btnFechar))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtIdProduto, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
+                            .addComponent(txtCodProduto, javax.swing.GroupLayout.DEFAULT_SIZE, 82, Short.MAX_VALUE)
                             .addComponent(txtQuantidade)
                             .addComponent(txtCodEntrada))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -288,7 +327,7 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
                 .addGap(11, 11, 11)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnPesquisarProd)
-                    .addComponent(txtIdProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCodProduto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
                     .addComponent(jLabel5)
                     .addComponent(txtNomeFuncionario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -318,15 +357,15 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
     private void cmbTipoMovimentacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cmbTipoMovimentacaoActionPerformed
         preencherTabela(cmbTipoMovimentacao.getSelectedIndex()+1);
         switch(cmbTipoMovimentacao.getSelectedIndex()+1){
-            case 1: 
+            case 1:
                 habilitarEnt(true);
                 habilitarSaid(false);
-                preencherTabela(1);
+                preencherTabela(cmbTipoMovimentacao.getSelectedIndex()+1);
                 break;
-            case 2: 
+            case 2:
                 habilitarSaid(true);
                 habilitarEnt(false);
-                preencherTabela(2);
+                preencherTabela(cmbTipoMovimentacao.getSelectedIndex()+1);
                 break;
         }
     }//GEN-LAST:event_cmbTipoMovimentacaoActionPerformed
@@ -342,16 +381,20 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
                     Date dataEntrada = Calendar.getInstance().getTime();
                     Date dataVal = df.parse(dataValidade);
                     EntradaProduto produtoEnt = new EntradaProduto();
-                    produtoEnt.setData_Validade(new java.sql.Date(dataVal.getTime()));
+                    if(cmbDia.isEnabled() && cmbMes.isEnabled() && cmbAno.isEnabled())
+                        produtoEnt.setData_Validade(new java.sql.Date(dataVal.getTime()));
+                    else
+                        produtoEnt.setData_Validade(null);
+                    
                     produtoEnt.setData_Entrada(new java.sql.Date(dataEntrada.getTime()));
                     produtoEnt.setQuantidade(Double.parseDouble(txtQuantidade.getText()));
                     produtoEnt.setAcao(1);
                     produtoEnt.setProduto(
                             new ProdutoBR().consultar(
-                                    Integer.parseInt(txtIdProduto.getText())));
-                    produtoEnt.setUsuario_Sis(usuarioSis);
+                                    Integer.parseInt(txtCodProduto.getText())));
+                    produtoEnt.setUsuario_Sis(frmPrincipalAlmoxarifado.usuarioSis);
                     
-                    if(txtCodEntrada.getText() != null || !txtCodEntrada.getText().isEmpty())
+                    if(txtCodEntrada.getText() != null && !txtCodEntrada.getText().isEmpty())
                         produtoEnt.setId(Integer.parseInt(txtCodEntrada.getText()));
                     
                     new EntradaProdutoBR().salvar(produtoEnt);
@@ -373,7 +416,12 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
                     if(txtCodSaida.getText() != null || !txtCodSaida.getText().isEmpty())
                         produtoSaida.setId(Integer.parseInt(txtCodSaida.getText()));
                     
+                    new EntradaProdutoBR().alterarQuantidade(new EntradaProdutoBR().consultar(
+                                    Integer.parseInt(txtCodEntrada.getText())), 
+                            Double.parseDouble(txtQuantidade.getText()));
+                    
                     new SaidaProdutoBR().salvar(produtoSaida);
+                    
                     JOptionPane.showMessageDialog(rootPane, "Saída registrada com sucesso!");
                     limparTela();
                     break;
@@ -385,15 +433,38 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
     }//GEN-LAST:event_btnRegistrarActionPerformed
 
     private void tblGeralMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblGeralMousePressed
-        switch(cmbTipoMovimentacao.getSelectedIndex()+1){
-            case 1: break;
-            case 2: break;
+        try {
+            switch(cmbTipoMovimentacao.getSelectedIndex()){
+                case 0:
+                    int linhaEnt = tblGeral.getSelectedRow();
+                    String codigoEnt = tblGeral.getValueAt(linhaEnt,0).toString();
+                    String codigoProd = tblGeral.getValueAt(linhaEnt,5).toString();
+                    String quantidade = tblGeral.getValueAt(linhaEnt,2).toString();
+                    String dataVal = tblGeral.getValueAt(linhaEnt,3).toString();
+                    System.out.println(dataVal);
+                    
+                    btnRegistrar.setEnabled(false);
+                    btnAlterar.setEnabled(true);
+                    
+                    txtCodEntrada.setText(codigoEnt);
+                    txtCodProduto.setText(codigoProd);
+                    txtQuantidade.setText(quantidade);
+                    break;
+                case 1: 
+                    int linhaSaida = tblGeral.getSelectedRow();
+                    String codEnt = tblGeral.getValueAt(linhaSaida,0).toString();
+                    txtCodEntrada.setText(codEnt);
+                    break;
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
     }//GEN-LAST:event_tblGeralMousePressed
 
     private void btnPesquisarFuncionarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPesquisarFuncionarioActionPerformed
         try {
-            frmFuncionarioPesquisa janela = new frmFuncionarioPesquisa(principal, false);
+            if(txtCodEntrada.getText().isEmpty()) System.out.println("");
+            frmFuncionarioPesquisa janela = new frmFuncionarioPesquisa(principal, false, Integer.parseInt(txtCodEntrada.getText()));
             principal.add(janela);
             janela.setVisible(true);
             this.dispose();
@@ -409,21 +480,20 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
             janela.setVisible(true);
             this.dispose();
         } catch (Exception e) {
+            e.printStackTrace();
             JOptionPane.showMessageDialog(rootPane, e.getMessage());
         }
     }//GEN-LAST:event_btnPesquisarProdActionPerformed
 
-    private void limparTela(){
-        txtIdProduto.setText("");
-        cmbTipoMovimentacao.setSelectedIndex(0);
-        txtNomeFuncionario.setText("");
-        txtMatriculaFunc.setText("");
-        txtQuantidade.setText("");
-        cmbDia.setSelectedIndex(0);
-        cmbMes.setSelectedIndex(0);
-        cmbAno.setSelectedIndex(0);
-        btnAlterar.setEnabled(false);
-    }
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        limparTela();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFecharActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnFecharActionPerformed
+
+    
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -451,13 +521,15 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
     private javax.swing.JTable tblGeral;
     private javax.swing.JTextField txtCodEntrada;
     private javax.swing.JTextField txtCodFuncionario;
+    private javax.swing.JTextField txtCodProduto;
     private javax.swing.JTextField txtCodSaida;
-    private javax.swing.JTextField txtIdProduto;
     private javax.swing.JTextField txtMatriculaFunc;
     private javax.swing.JTextField txtNomeFuncionario;
     private javax.swing.JTextField txtQuantidade;
     // End of variables declaration//GEN-END:variables
-
+    
+    
+    
     @Override
     public void popularCombo() {
         try {
@@ -488,11 +560,13 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
                     dados.removeAllElements();
                     new EntradaProdutoBR().listar().forEach(produtoEnt -> {
                         Vector<String> linha = new Vector<>();
-                        linha.add(produtoEnt.getProduto().getId_prod()+"");
+                        linha.add(produtoEnt.getId()+"");
                         linha.add(produtoEnt.getProduto().getNome());
                         linha.add(produtoEnt.getQuantidade()+"");
                         linha.add(produtoEnt.getData_Validade()+"");
                         linha.add(produtoEnt.getData_Entrada()+"");
+                        linha.add(produtoEnt.getProduto().getId_prod()+"");
+                        dados.add(linha);
                     });
                     tblGeral.setModel(new DefaultTableModel(dados, tabelaEntrada()));
                     break;
@@ -503,6 +577,7 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
                         linha.add(produtoEnt.getProduto().getId_prod()+"");
                         linha.add(produtoEnt.getProduto().getNome());
                         linha.add(produtoEnt.getQuantidade()+"");
+                        dados.add(linha);
                     });
                     tblGeral.setModel(new DefaultTableModel(dados, tabelaSaida()));
                     break;
@@ -515,11 +590,12 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
     
     private Vector<String> tabelaEntrada(){
             Vector<String> cabecalho = new Vector<>();
-            cabecalho.add("Código");
+            cabecalho.add("Código da entrada");
             cabecalho.add("Nome");
             cabecalho.add("Quantidade");
             cabecalho.add("Validade");
             cabecalho.add("Data de Entrada");
+            cabecalho.add("Código do produto");
             
             return cabecalho;
     }
@@ -532,10 +608,20 @@ public class frmMovimentacao extends javax.swing.JInternalFrame implements Popul
 
         return cabecalho;
     }
-
+    
+    private void preencherSai(Funcionario func){
+        try {
+            txtCodFuncionario.setText(func.getId()+"");
+            txtNomeFuncionario.setText(func.getNome());
+            txtMatriculaFunc.setText(func.getMatricula());
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(rootPane, e.getMessage());
+        }
+    }
+    
     private void habilitarEnt(boolean cond) {
         btnPesquisarProd.setEnabled(cond);
-        txtIdProduto.setEnabled(cond);
+        txtCodProduto.setEnabled(cond);
         txtQuantidade.setEnabled(cond);
         cmbDia.setEnabled(cond);
         cmbMes.setEnabled(cond);

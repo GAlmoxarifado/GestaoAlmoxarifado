@@ -19,7 +19,7 @@ public class frmPrincipalAlmoxarifado extends javax.swing.JFrame {
     /**
      * Creates new form frmPrincipalCampeonato
      */
-    Usuario usuarioSis;
+    static Usuario usuarioSis;
     
     public frmPrincipalAlmoxarifado() {
         initComponents();
@@ -28,8 +28,7 @@ public class frmPrincipalAlmoxarifado extends javax.swing.JFrame {
     
     public frmPrincipalAlmoxarifado(Usuario usuarioSis){
         this();
-        this.usuarioSis = usuarioSis;
-        System.out.println(usuarioSis.getFuncionario().getNome());
+        frmPrincipalAlmoxarifado.usuarioSis = usuarioSis;
     }
     
     private void sair(){
@@ -174,7 +173,7 @@ public class frmPrincipalAlmoxarifado extends javax.swing.JFrame {
 
     private void mnuMovimentacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuMovimentacaoActionPerformed
         try {
-            frmMovimentacao frm = new frmMovimentacao(this.pnlPrincipal);
+            frmMovimentacao frm = new frmMovimentacao(this.pnlPrincipal, usuarioSis);
             this.pnlPrincipal.add(frm);
             frm.setVisible(true);
         } catch (Exception e) {

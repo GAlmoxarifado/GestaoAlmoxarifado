@@ -35,7 +35,7 @@ public class UsuarioSistemaDAO {
         prd.setString(1, usuario.getEmail());
         prd.setString(2, usuario.getSenha());
         prd.setInt(3, usuario.getFuncionario().getId());
-        prd.setLong(4, usuario.getCpf());
+        prd.setString(4, usuario.getCpf());
 
         //Executa o sql contra o banco
         prd.execute();
@@ -68,7 +68,7 @@ public class UsuarioSistemaDAO {
         prd.setString(1, usuarioSis.getEmail());
         prd.setString(2, usuarioSis.getSenha());
         prd.setInt(3, usuarioSis.getFuncionario().getId());
-        prd.setLong(4, usuarioSis.getCpf());
+        prd.setString(4, usuarioSis.getCpf());
         prd.setInt(5, usuarioSis.getIdUsuario());
 
         //Executa o sql contra o banco
@@ -113,14 +113,14 @@ public class UsuarioSistemaDAO {
             usuarioSis.setEmail(rs.getString("email"));
             usuarioSis.setSenha(rs.getString("senha"));
             usuarioSis.setFuncionario(new FuncionarioDAO().consultar(rs.getInt("funcionario")));
-            usuarioSis.setCpf(rs.getLong("cpf"));
+            usuarioSis.setCpf(rs.getString("cpf"));
         }
 
         return usuarioSis;
 
     }
     
-    public Usuario consultar(long cpf, String senha) throws SQLException {
+    public Usuario consultar(String cpf, String senha) throws SQLException {
 
         
             String sql = "SELECT id_usu_sis, email, senha, funcionario, cpf "
@@ -128,7 +128,7 @@ public class UsuarioSistemaDAO {
 
             Connection cnn = util.Conexao.getConexao();
             PreparedStatement prd = cnn.prepareStatement(sql);
-            prd.setLong(1, cpf);
+            prd.setString(1, cpf);
             prd.setString(2, senha);
 
             ResultSet rs = prd.executeQuery();
@@ -140,10 +140,10 @@ public class UsuarioSistemaDAO {
                 usuarioSis.setEmail(rs.getString("email"));
                 usuarioSis.setSenha(rs.getString("senha"));
                 usuarioSis.setFuncionario(new FuncionarioDAO().consultar(rs.getInt("funcionario")));
-                usuarioSis.setCpf(rs.getLong("cpf"));
+                usuarioSis.setCpf(rs.getString("cpf"));
                 return usuarioSis;
             } else 
-                throw new SQLException("Teste");
+                throw new SQLException("CPF/Senha inválido. Digite novamente.");
 
     //        System.out.println(usuarioSis.getCpf());
 
@@ -170,7 +170,7 @@ public class UsuarioSistemaDAO {
             usuarioSis.setEmail(rs.getString("email"));
             usuarioSis.setSenha(rs.getString("senha"));
             usuarioSis.setFuncionario(usuarioAux);
-            usuarioSis.setCpf(rs.getLong("cpf"));
+            usuarioSis.setCpf(rs.getString("cpf"));
             lista.add(usuarioSis);
         }
 
